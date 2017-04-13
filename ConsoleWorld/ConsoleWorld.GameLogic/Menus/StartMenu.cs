@@ -10,59 +10,25 @@ namespace ConsoleWorld.GameLogic.Menus
             this.CurrentOption = currentOption;
         }
         public StartMenuOption CurrentOption { get; set; }
-
+        private int length = 7;
         public void Draw()
         {
             Console.Clear();
             DrawTitle();
-            if (this.CurrentOption == StartMenuOption.Start)
-            {
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor= ConsoleColor.Black;
-                Console.WriteLine("Start");
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("Help");
-                Console.WriteLine("Credits");
-                Console.WriteLine("Exit");
+            Console.SetCursorPosition(55, 15);
+            Console.BackgroundColor = ConsoleColor.White;
+            Console.ForegroundColor= ConsoleColor.Black;
+            Console.WriteLine(new string(' ',(length-"Start".Length)/2)+"Start"+ new string(' ', (length - "Start".Length) / 2 + (7 - "Start".Length)%2));
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.SetCursorPosition(55, 16);
+            Console.WriteLine(new string(' ', (length - "Help".Length) / 2) + "Help" + new string(' ', (length - "Help".Length) / 2 + (7 - "Help".Length) % 2));
+            Console.SetCursorPosition(55, 17);
+            Console.WriteLine("Credits");
+            Console.SetCursorPosition(55, 18);
+            Console.WriteLine(new string(' ', (length - "Exit".Length) / 2) + "Exit" + new string(' ', (length - "Exit".Length) / 2 + (7 - "Exit".Length) % 2));
 
-            }
-            if (this.CurrentOption == StartMenuOption.Help)
-            {
-                Console.WriteLine("Start");
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine("Help");
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.White;                
-                Console.WriteLine("Credits");
-                Console.WriteLine("Exit");
 
-            }
-            if (this.CurrentOption == StartMenuOption.Credits)
-            {
-                Console.WriteLine("Start");
-                Console.WriteLine("Help");
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine("Credits");
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.White;       
-                Console.WriteLine("Exit");
-
-            }
-            if (this.CurrentOption == StartMenuOption.Exit)
-            {
-                Console.WriteLine("Start");
-                Console.WriteLine("Help");
-                Console.WriteLine("Credits");
-                Console.BackgroundColor = ConsoleColor.White;
-                Console.ForegroundColor = ConsoleColor.Black;
-                Console.WriteLine("Exit");
-                Console.BackgroundColor = ConsoleColor.Black;
-                Console.ForegroundColor = ConsoleColor.White;
-
-            }
         }
 
         public void DrawTitle()
@@ -103,25 +69,102 @@ namespace ConsoleWorld.GameLogic.Menus
             ConsoleKey key = Console.ReadKey().Key;
             while (key != ConsoleKey.Escape)
             {
-                this.Draw();
+                
                 switch (key)
                 {
                     case ConsoleKey.DownArrow:
-                        CurrentOption = (StartMenuOption) ((int) (this.CurrentOption + 1)%4);
+                    {                        
+                            TurnOptionToUnchoosed(CurrentOption);
+                        CurrentOption = (StartMenuOption) ((int) (this.CurrentOption + 1) % 4);
+                            TurnOptionToChoosed(CurrentOption);
+                    }
                         break;
                     case ConsoleKey.UpArrow:
+                    {
+                            TurnOptionToUnchoosed(CurrentOption);
                         CurrentOption = this.CurrentOption - 1 < 0
                             ? StartMenuOption.Exit
                             : (StartMenuOption) (this.CurrentOption - 1);
+                            TurnOptionToChoosed(CurrentOption);
+                    }
                         break;
                 }
+                
                 key = Console.ReadKey().Key;
             }
         }
 
-        //public int OptionChoosed()
-        //{
-        //    if()
-        //}
+        public void TurnOptionToChoosed(StartMenuOption option)
+        {
+            if (option == StartMenuOption.Start)
+            {
+                Console.SetCursorPosition(55, 15);
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine(new string(' ', (length - "Start".Length) / 2) + "Start" + new string(' ', (length - "Start".Length) / 2 + (7 - "Start".Length) % 2));
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            if (option == StartMenuOption.Help)
+            {
+                Console.SetCursorPosition(55, 16);
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine(new string(' ', (length - "Help".Length) / 2) + "Help" + new string(' ', (length - "Help".Length) / 2 + (7 - "Hepl".Length) % 2));
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            if (option == StartMenuOption.Credits)
+            {
+                Console.SetCursorPosition(55, 17);
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine("Credits");
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+            if (option == StartMenuOption.Exit)
+            {
+                Console.SetCursorPosition(55, 18);
+                Console.BackgroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.WriteLine(new string(' ', (length - "Exit".Length) / 2) + "Exit" + new string(' ', (length - "Exit".Length) / 2 + (7 - "Exit".Length) % 2));
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+            }
+        }
+        public void TurnOptionToUnchoosed(StartMenuOption option)
+        {
+            if (option == StartMenuOption.Start)
+            {
+                Console.SetCursorPosition(55, 15);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(new string(' ', (length - "Start".Length) / 2) + "Start" + new string(' ', (length - "Start".Length) / 2 + (7 - "Start".Length) % 2));
+
+            }
+            if (option == StartMenuOption.Help)
+            {
+                Console.SetCursorPosition(55, 16);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(new string(' ', (length - "Help".Length) / 2) + "Help" + new string(' ', (length - "Help".Length) / 2 + (7 - "Help".Length) % 2));
+            }
+            if (option == StartMenuOption.Credits)
+            {
+                Console.SetCursorPosition(55, 17);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Credits");
+                
+            }
+            if (option == StartMenuOption.Exit)
+            {
+                Console.SetCursorPosition(55, 18);
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine(new string(' ', (length - "Exit".Length) / 2) + "Exit" + new string(' ', (length - "Exit".Length) / 2 + (7 - "Exit".Length) % 2));
+            }
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace ConsoleWorld.GameLogic
     {
         static void Main()
         {
+            Console.CursorVisible = false;
            StartMenu Menu= new StartMenu();
             Menu.Draw();
             Menu.ChooseOption();
