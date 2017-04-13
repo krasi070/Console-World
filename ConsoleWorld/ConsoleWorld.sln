@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleWorld.Data", "Consol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleWorld.Models", "ConsoleWorld.Models\ConsoleWorld.Models.csproj", "{D52E6B8F-FDFA-4BC4-83A9-F914FF1768E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleWorld.GameLogic", "ConsoleWorld.GameLogic\ConsoleWorld.GameLogic.csproj", "{B0217A97-242B-4F7C-9C16-19A08F94AA0C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D52E6B8F-FDFA-4BC4-83A9-F914FF1768E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D52E6B8F-FDFA-4BC4-83A9-F914FF1768E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D52E6B8F-FDFA-4BC4-83A9-F914FF1768E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0217A97-242B-4F7C-9C16-19A08F94AA0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0217A97-242B-4F7C-9C16-19A08F94AA0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0217A97-242B-4F7C-9C16-19A08F94AA0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0217A97-242B-4F7C-9C16-19A08F94AA0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
