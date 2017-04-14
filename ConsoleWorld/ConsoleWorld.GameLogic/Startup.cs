@@ -1,15 +1,16 @@
 ﻿namespace ConsoleWorld.GameLogic
 {
     using System;
-    using ConsoleWorld.GameLogic.Menus;
-    class Startup
+    using Screens;
+
+    public class Startup
     {
-        static void Main()
+        public static void Main()
         {
             Console.CursorVisible = false;
-            StartMenu Menu= new StartMenu();
-            Menu.Draw();
-            Menu.ChooseOption();
+            ScreenHandler handler = new ScreenHandler();
+            TitleScreen.Draw();
+            handler.SelectOptionFromTitleScreen();
         }
     }
 }
