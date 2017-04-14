@@ -2,15 +2,15 @@
 {
     public class Knight : Character
     {
-        private const int DefaultHp = 250;
-        private const int DefaultMp = 0;
-        private const int DefaultAttack = 50;
-        private const int DefaultMagicAttack = 0;
-        private const int DefaultDefense = 25;
-        private const int DefaultMagicDefense = 5;
-        private const int DefaultEvade = 5;
-        private const int DefaultAccuracy = 85;
-        private const int DefaultRange = 1;
+        public const int DefaultHp = 250;
+        public const int DefaultMp = 0;
+        public const int DefaultAttack = 50;
+        public const int DefaultMagicAttack = 0;
+        public const int DefaultDefense = 25;
+        public const int DefaultMagicDefense = 5;
+        public const int DefaultEvade = 5;
+        public const int DefaultAccuracy = 85;
+        public const int DefaultRange = 1;
 
         public Knight()
             : base()

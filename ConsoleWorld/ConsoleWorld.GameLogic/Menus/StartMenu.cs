@@ -27,11 +27,9 @@ namespace ConsoleWorld.GameLogic.Menus
             Console.WriteLine("Credits");
             Console.SetCursorPosition(55, 18);
             Console.WriteLine(new string(' ', (length - "Exit".Length) / 2) + "Exit" + new string(' ', (length - "Exit".Length) / 2 + (7 - "Exit".Length) % 2));
-
-
         }
 
-        public void DrawTitle()
+        public static void DrawTitle()
         {
             Console.SetCursorPosition(25, 0);
             Console.Write(" ______" + new string(' ', 43) + "_");
@@ -87,6 +85,23 @@ namespace ConsoleWorld.GameLogic.Menus
                             : (StartMenuOption) (this.CurrentOption - 1);
                             TurnOptionToChoosed(CurrentOption);
                     }
+                        break;
+                    case ConsoleKey.Enter:
+                        {
+                            switch (CurrentOption)
+                            {
+                                case StartMenuOption.Exit:
+                                    Environment.Exit(0);
+                                    break;
+                                case StartMenuOption.Start:
+                                {
+                                    var loadCreateGame = new LoadCreateGameMenu();
+                                        loadCreateGame.DrawLoadCreateGame();
+                                        loadCreateGame.ChooseOption();
+                                }
+                                    break;
+                            }
+                        }
                         break;
                 }
                 

@@ -43,13 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Menus\CreateGameMenu.cs" />
+    <Compile Include="Menus\Enums\LoadCreateGameMenuOption.cs" />
     <Compile Include="Menus\Enums\StartMenuOption.cs" />
+    <Compile Include="Menus\LoadCreateGameMenu.cs" />
     <Compile Include="Menus\StartMenu.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConsoleWorld.Models\ConsoleWorld.Models.csproj">
+      <Project>{d52e6b8f-fdfa-4bc4-83a9-f914ff1768e3}</Project>
+      <Name>ConsoleWorld.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
