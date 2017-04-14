@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Engine.cs" />
     <Compile Include="Screens\CharacterCreationScreen.cs" />
     <Compile Include="Screens\Enums\StartMenuOption.cs" />
     <Compile Include="Screens\Enums\TitleScreenOption.cs" />
