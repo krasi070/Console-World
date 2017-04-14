@@ -91,6 +91,7 @@ namespace ConsoleWorld.GameLogic.Menus
                                 {
                                     var create = new CreateGameMenu();
                                         create.DrawCreateGameMenu();
+                                        create.ChooseOption();
                                 }
                                     break;
                             }

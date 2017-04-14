@@ -2,15 +2,15 @@
 {
     public class Thief : Character
     {
-        private const int DefaultHp = 160;
-        private const int DefaultMp = 0;
-        private const int DefaultAttack = 35;
-        private const int DefaultMagicAttack = 0;
-        private const int DefaultDefense = 12;
-        private const int DefaultMagicDefense = 15;
-        private const int DefaultEvade = 30;
-        private const int DefaultAccuracy = 90;
-        private const int DefaultRange = 1;
+        public const int DefaultHp = 160;
+        public const int DefaultMp = 0;
+        public const int DefaultAttack = 35;
+        public const int DefaultMagicAttack = 0;
+        public const int DefaultDefense = 12;
+        public const int DefaultMagicDefense = 15;
+        public const int DefaultEvade = 30;
+        public const int DefaultAccuracy = 90;
+        public const int DefaultRange = 1;
 
         public Thief()
             : base()

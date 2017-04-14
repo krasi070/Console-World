@@ -2,15 +2,15 @@
 {
     public class Robot : Character
     {
-        private const int DefaultHp = 200;
-        private const int DefaultMp = 50;
-        private const int DefaultAttack = 25;
-        private const int DefaultMagicAttack = 31;
-        private const int DefaultDefense = 25;
-        private const int DefaultMagicDefense = 25;
-        private const int DefaultEvade = 5;
-        private const int DefaultAccuracy = 80;
-        private const int DefaultRange = 1;
+        public const int DefaultHp = 200;
+        public const int DefaultMp = 50;
+        public const int DefaultAttack = 25;
+        public const int DefaultMagicAttack = 31;
+        public const int DefaultDefense = 25;
+        public const int DefaultMagicDefense = 25;
+        public const int DefaultEvade = 5;
+        public const int DefaultAccuracy = 80;
+        public const int DefaultRange = 1;
 
         public Robot()
             : base()

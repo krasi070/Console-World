@@ -2,15 +2,15 @@
 {
     public class Magician : Character
     {
-        private const int DefaultHp = 125;
-        private const int DefaultMp = 100;
-        private const int DefaultAttack = 10;
-        private const int DefaultMagicAttack = 40;
-        private const int DefaultDefense = 10;
-        private const int DefaultMagicDefense = 30;
-        private const int DefaultEvade = 5;
-        private const int DefaultAccuracy = 82;
-        private const int DefaultRange = 2;
+        public const int DefaultHp = 125;
+        public const int DefaultMp = 100;
+        public const int DefaultAttack = 10;
+        public const int DefaultMagicAttack = 40;
+        public const int DefaultDefense = 10;
+        public const int DefaultMagicDefense = 30;
+        public const int DefaultEvade = 5;
+        public const int DefaultAccuracy = 82;
+        public const int DefaultRange = 2;
 
         public Magician()
             : base()

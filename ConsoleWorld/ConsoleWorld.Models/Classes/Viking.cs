@@ -2,15 +2,15 @@
 {
     public class Viking : Character
     {
-        private const int DefaultHp = 220;
-        private const int DefaultMp = 0;
-        private const int DefaultAttack = 65;
-        private const int DefaultMagicAttack = 0;
-        private const int DefaultDefense = 18;
-        private const int DefaultMagicDefense = 10;
-        private const int DefaultEvade = 7;
-        private const int DefaultAccuracy = 80;
-        private const int DefaultRange = 1;
+        public const int DefaultHp = 220;
+        public const int DefaultMp = 0;
+        public const int DefaultAttack = 65;
+        public const int DefaultMagicAttack = 0;
+        public const int DefaultDefense = 18;
+        public const int DefaultMagicDefense = 10;
+        public const int DefaultEvade = 7;
+        public const int DefaultAccuracy = 80;
+        public const int DefaultRange = 1;
 
         public Viking()
             : base()
