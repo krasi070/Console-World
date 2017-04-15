@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System;
 
     public class Unit
     {
@@ -12,6 +14,21 @@
         {
             this.Items = new HashSet<Item>();
         }
+
+        [NotMapped]
+        public int X { get; set; }
+
+        [NotMapped]
+        public int Y { get; set; }
+
+        [NotMapped]
+        public char Symbol { get; set; }
+
+        [NotMapped]
+        public ConsoleColor ForegroundColor { get; set; }
+
+        [NotMapped]
+        public ConsoleColor BackgroungColor { get; set; } 
 
         [Required]
         public string Name { get; set; }
@@ -86,5 +103,15 @@
         public virtual Weapon EquippedWeapon { get; set; }
 
         public virtual ICollection<Item> Items { get; set; }
+
+        public void Draw()
+        {
+            Console.BackgroundColor = this.BackgroungColor;
+            Console.ForegroundColor = this.ForegroundColor;
+            Console.SetCursorPosition(this.X, this.Y);
+            Console.Write(this.Symbol);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+        }
     }
 }

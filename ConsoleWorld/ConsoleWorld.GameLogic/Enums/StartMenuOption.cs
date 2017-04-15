@@ -1,4 +1,4 @@
-﻿namespace ConsoleWorld.GameLogic.Screens.Enums
+﻿namespace ConsoleWorld.GameLogic.Enums
 {
     public enum StartMenuOption
     {

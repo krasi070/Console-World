@@ -43,13 +43,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Core\Dungeon.cs" />
+    <Compile Include="Core\Engine.cs" />
+    <Compile Include="Core\Tile.cs" />
+    <Compile Include="Enums\Direction.cs" />
+    <Compile Include="Enums\TileType.cs" />
+    <Compile Include="Geometry\Rectangle.cs" />
     <Compile Include="Screens\CharacterCreationScreen.cs" />
     <Compile Include="Screens\CreditsScreen.cs" />
-    <Compile Include="Screens\Enums\StartMenuOption.cs" />
-    <Compile Include="Screens\Enums\TitleScreenOption.cs" />
     <Compile Include="Screens\HelpScreen.cs" />
     <Compile Include="Screens\LoadGameScreen.cs" />
+    <Compile Include="Enums\StartMenuOption.cs" />
+    <Compile Include="Enums\TitleScreenOption.cs" />
     <Compile Include="Screens\StartMenuScreen.cs" />
     <Compile Include="Screens\ScreenHandler.cs" />
     <Compile Include="Screens\TitleScreen.cs" />
