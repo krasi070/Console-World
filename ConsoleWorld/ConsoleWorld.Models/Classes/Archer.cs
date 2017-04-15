@@ -11,7 +11,10 @@
         public const int DefaultEvade = 20;
         public const int DefaultAccuracy = 75;
         public const int DefaultRange = 3;
+        public const int DefaultLvl = 1;
 
+        public const int DefaultPoints = 0;
+        public const int DefaultExp = 0;
         public Archer()
             : base()
         {
@@ -26,6 +29,11 @@
             this.Evade = DefaultEvade;
             this.Accuracy = DefaultAccuracy;
             this.Range = DefaultRange;
+            this.Class = Enums.Class.Archer;
+            this.LevelId = DefaultLvl;
+
+            this.Points = DefaultPoints;
+            this.Exp = DefaultExp;
         }
     }
 }
