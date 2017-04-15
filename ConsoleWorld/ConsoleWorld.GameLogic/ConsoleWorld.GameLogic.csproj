@@ -45,8 +45,11 @@
   <ItemGroup>
     <Compile Include="Engine.cs" />
     <Compile Include="Screens\CharacterCreationScreen.cs" />
+    <Compile Include="Screens\CreditsScreen.cs" />
     <Compile Include="Screens\Enums\StartMenuOption.cs" />
     <Compile Include="Screens\Enums\TitleScreenOption.cs" />
+    <Compile Include="Screens\HelpScreen.cs" />
+    <Compile Include="Screens\LoadGameScreen.cs" />
     <Compile Include="Screens\StartMenuScreen.cs" />
     <Compile Include="Screens\ScreenHandler.cs" />
     <Compile Include="Screens\TitleScreen.cs" />
@@ -57,6 +60,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConsoleWorld.Data\ConsoleWorld.Data.csproj">
+      <Project>{35abd395-0d72-47fa-a74e-e771bd43f8f2}</Project>
+      <Name>ConsoleWorld.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ConsoleWorld.Models\ConsoleWorld.Models.csproj">
       <Project>{d52e6b8f-fdfa-4bc4-83a9-f914ff1768e3}</Project>
       <Name>ConsoleWorld.Models</Name>

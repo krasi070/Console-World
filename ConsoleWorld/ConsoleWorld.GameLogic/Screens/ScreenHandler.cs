@@ -16,10 +16,14 @@
                     this.SelectOptionFromStartMenuScreen();
                     break;
                 case TitleScreenOption.Help:
-                    // TODO: Create HelpScreen class and draw it here
-                    break;
+                    
+                    HelpScreen.Draw();                   
+                    BackFromHelp();   
+                      break;
+                    
                 case TitleScreenOption.Credits:
-                    // TODO: Create Credits class and draw it here
+                    CreditsScreen.Draw();
+                    BackFromHelp();
                     break;
                 case TitleScreenOption.Exit:
                     Environment.Exit(0);
@@ -34,7 +38,7 @@
             switch (StartMenuScreen.CurrentOption)
             {
                 case StartMenuOption.LoadGame:
-                    // TODO: Create LoadScreen class and draw it here
+                    LoadGameScreen.Draw();
                     break;
                 case StartMenuOption.NewGame:
                     CharacterCreationScreen.Draw();
@@ -45,6 +49,20 @@
                     this.SelectOptionFromTitleScreen();
                     break;
             }
+        }
+
+        public void BackFromHelp()
+        {
+            while (true)
+            {
+                var key = Console.ReadKey(true).Key;
+                if (key == ConsoleKey.Enter)
+                {
+                    TitleScreen.Draw();
+                    SelectOptionFromTitleScreen();
+                    break;
+                }
+            }           
         }
     }
 }

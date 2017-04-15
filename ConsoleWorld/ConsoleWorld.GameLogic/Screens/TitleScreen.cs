@@ -2,7 +2,6 @@
 {
     using System;
     using Enums;
-
     public static class TitleScreen
     {
         private const int TitleX = 29;
@@ -26,6 +25,7 @@
 
         public static void DrawTitle()
         {
+            
             Console.SetCursorPosition(TitleX, TitleY);
             Console.Write(" ______" + new string(' ', 43) + "_");
             Console.SetCursorPosition(TitleX, TitleY + 1);
