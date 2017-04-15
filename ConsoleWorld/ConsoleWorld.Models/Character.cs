@@ -3,6 +3,7 @@
     using Enums;
     using System.ComponentModel.DataAnnotations;
     using System.Collections.Generic;
+    using System;
 
     public class Character : Unit
     {
@@ -10,16 +11,15 @@
             : base()
         {
             this.Weapons = new HashSet<Weapon>();
+            this.Symbol = '@';
+            this.BackgroungColor = ConsoleColor.Black;
+            this.ForegroundColor = ConsoleColor.White;
         }
 
         public int Id { get; set; }
 
         [Required]
         public Class Class { get; set; }
-
-        public int UserId { get; set; }
-
-        public virtual User User { get; set; }
 
         public Gender Gender { get; set; }
         

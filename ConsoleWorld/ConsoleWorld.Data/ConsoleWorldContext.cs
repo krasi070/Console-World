@@ -11,8 +11,6 @@ namespace ConsoleWorld.Data
             Database.SetInitializer(new DropCreateDatabaseAlways<ConsoleWorldContext>());
         }
 
-        public virtual DbSet<User> Users { get; set; }
-
         public virtual DbSet<Character> Characters { get; set; }
 
         public virtual DbSet<Item> Items { get; set; }

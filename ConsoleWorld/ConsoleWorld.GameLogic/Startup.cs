@@ -1,6 +1,7 @@
 ﻿namespace ConsoleWorld.GameLogic
 {
     using System;
+    using Core;
 
     public class Startup
     {
