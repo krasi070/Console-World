@@ -10,6 +10,7 @@
             this.Type = type;
             this.SetColorsForType();
             this.SetSymbolForType();
+            this.IsVisibe = false;
         }
 
         public char Symbol { get; set; }
@@ -21,6 +22,8 @@
         public bool IsDefaultColors { get; set; }
 
         public TileType Type { get; set; }
+
+        public bool IsVisibe { get; set; }
 
         private void SetColorsForType()
         {

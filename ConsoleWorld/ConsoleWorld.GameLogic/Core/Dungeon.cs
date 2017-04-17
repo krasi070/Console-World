@@ -13,6 +13,7 @@
         private const int MaxRoomSize = 8;
         private const int MinCorridorLength = 5;
         private const int MaxCorridorLength = 8;
+        private const int VisibilityRange = 1;
 
         private Random random;
 
@@ -86,18 +87,21 @@
         public void DrawTile(int x, int y)
         {
             Tile tile = this.GetTile(x, y);
-            Console.SetCursorPosition(x, y);
-            if (tile.IsDefaultColors)
+            if (tile.IsVisibe)
             {
-                Console.Write(tile.Symbol);
-            }
-            else
-            {
-                Console.ForegroundColor = tile.ForegroundColor;
-                Console.BackgroundColor = tile.BackgroundColor;
-                Console.Write(tile.Symbol);
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.BackgroundColor = ConsoleColor.Black;
+                Console.SetCursorPosition(x, y);
+                if (tile.IsDefaultColors)
+                {
+                    Console.Write(tile.Symbol);
+                }
+                else
+                {
+                    Console.ForegroundColor = tile.ForegroundColor;
+                    Console.BackgroundColor = tile.BackgroundColor;
+                    Console.Write(tile.Symbol);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.Black;
+                }
             }
         }
 
@@ -127,6 +131,7 @@
                 character.X = x;
                 character.Y = y;
                 character.Draw();
+                this.MakeAdjacentTilesVisible(character.X, character.Y);
 
                 // place one object in one room (optional)
                 this.Rooms.RemoveAt(index);
@@ -135,6 +140,22 @@
             }
 
             return false;
+        }
+
+        public void MakeAdjacentTilesVisible(int x, int y)
+        {
+            for (int i = Math.Max(x - VisibilityRange, 0); i <= Math.Min(x + VisibilityRange, this.Width); i++)
+            {
+                for (int j = Math.Max(y - VisibilityRange, 0); j <= Math.Min(y + VisibilityRange, this.Height); j++)
+                {
+                    this.GetTile(i, j).IsVisibe = true;
+
+                    if (i != x || j != y)
+                    {
+                        this.DrawTile(i, j);
+                    }
+                }
+            }
         }
 
         private void SetTile(int x, int y, Tile tile)

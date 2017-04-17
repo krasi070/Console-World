@@ -26,7 +26,6 @@
             //TitleScreen.Draw();
             //this.screenHandler.SelectOptionFromTitleScreen();
             this.dungeon.Generate(10);
-            this.dungeon.Draw();
             // This character is only for testing purposes
             Character character = new Character();
             this.dungeon.PlacePlayer(character);
@@ -34,6 +33,7 @@
             while (true)
             {
                 this.playerController.MovePlayer(dungeon, character, key);
+                dungeon.MakeAdjacentTilesVisible(character.X, character.Y);
 
                 key = Console.ReadKey(true).Key;
             }

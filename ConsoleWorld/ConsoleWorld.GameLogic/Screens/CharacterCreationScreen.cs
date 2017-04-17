@@ -2,13 +2,12 @@
 {
     using Models.Enums;
     using System;
-    using System.IO;
     using System.Text;
-    using ConsoleWorld;
-    using ConsoleWorld.Data;
+    using Data;
     using System.Linq;
-    using ConsoleWorld.Models.Classes;
-    using ConsoleWorld.Models;
+    using Models.Classes;
+    using Models;
+
     public static class CharacterCreationScreen
     {
         private const int SelectLength = 12;
