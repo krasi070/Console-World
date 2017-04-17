@@ -11,7 +11,10 @@
         public const int DefaultEvade = 5;
         public const int DefaultAccuracy = 85;
         public const int DefaultRange = 1;
+        public const int DefaultLvl = 1;
 
+        public const int DefaultPoints = 0;
+        public const int DefaultExp = 0;
         public Knight()
             : base()
         {
@@ -26,6 +29,10 @@
             this.Evade = DefaultEvade;
             this.Accuracy = DefaultAccuracy;
             this.Range = DefaultRange;
+            this.Class = Enums.Class.Knight;
+            this.LevelId = DefaultLvl;
+            this.Points = DefaultPoints;
+            this.Exp = DefaultExp;
         }
     }
 }

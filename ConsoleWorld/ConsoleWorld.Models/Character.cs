@@ -20,8 +20,6 @@
 
         [Required]
         public Class Class { get; set; }
-
-        public Gender Gender { get; set; }
         
         [Range(0, int.MaxValue)]
         public int Exp { get; set; }

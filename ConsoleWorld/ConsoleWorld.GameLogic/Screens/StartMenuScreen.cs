@@ -2,7 +2,6 @@
 {
     using System;
     using Enums;
-
     public static class StartMenuScreen
     {
         private const int OptionsX = 52;
