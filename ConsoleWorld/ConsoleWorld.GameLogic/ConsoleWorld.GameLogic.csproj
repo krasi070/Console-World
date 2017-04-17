@@ -59,7 +59,6 @@
     <Compile Include="Core\Tile.cs" />
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="Enums\ImrpoveStatsOption.cs" />
-    <Compile Include="Enums\ItemOption.cs" />
     <Compile Include="Enums\TileType.cs" />
     <Compile Include="Geometry\Rectangle.cs" />
     <Compile Include="Handler\MessageHandler.cs" />

@@ -4,12 +4,9 @@
     using Enums;
     using Models;
     using Data;
+
     public class ImproveStatsScreen
     {
-        public static ImproveStatsOption CurrentOption { get; set; }
-        public static Character CurrentClass { get; set; }
-        //TODO: GET THE CURRENT CLASS
-
         private const int TitleX = 29;
         private const int TitleY = 0;
         private const int OptionsX = 52;
@@ -18,6 +15,11 @@
         private const int NumberOfOptions = 8;
         private const int StatsX = 75;
         private const int StatsY = 17;
+
+        public static ImproveStatsOption CurrentOption { get; set; }
+        public static Character CurrentClass { get; set; }
+        //TODO: GET THE CURRENT CLASS
+
         public static void Draw()
         {
             Console.Clear();
@@ -35,6 +37,7 @@
             RemoveHighlight(ImproveStatsOption.Accuracy);
 
         }
+
         public static void SelectOption()
         {
             ConsoleKey key = Console.ReadKey(true).Key;

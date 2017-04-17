@@ -15,6 +15,7 @@
         private const int OptionsY = 20;
         private const int SelectLength = 16;
         public static int NumberOfOptions = ctx.CharacterItems.Count();
+
         public static void ListItems()
         {
             var items = ctx.CharacterItems.OrderBy(n=>n.Item.Name);
@@ -25,6 +26,7 @@
                 Console.WriteLine(item.Item.Name);                
             }
         }
+
         public static void SelectOption()
         {
             ConsoleKey key = Console.ReadKey(true).Key;
@@ -85,6 +87,5 @@
                 key = Console.ReadKey(true).Key;
             }
         }
-
     }
 }

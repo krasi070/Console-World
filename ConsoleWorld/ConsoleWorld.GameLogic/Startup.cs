@@ -10,8 +10,8 @@
         {
             SetConsoleValues();
             Engine engine = new Engine();
-            //engine.Run();
-            ImproveStatsScreen.Draw();
+            engine.Run();
+            //ImproveStatsScreen.Draw();
             //TitleScreen.Draw();
         }
 
@@ -19,7 +19,7 @@
         {
             Console.CursorVisible = false;
             Console.WindowWidth = 120;
-            Console.WindowHeight = 50;
+            Console.WindowHeight = 30;
             Console.BufferWidth = Console.WindowWidth;
             Console.BufferHeight = Console.WindowHeight;
         }

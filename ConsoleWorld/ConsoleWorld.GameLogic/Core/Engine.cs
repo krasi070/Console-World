@@ -51,7 +51,10 @@
             {
                 this.playerController.MovePlayer(dungeon, character, key);
                 dungeon.MakeAdjacentTilesVisible(character.X, character.Y);
-                this.enemyController.MoveEnemy(this.dungeon, rat);
+                if (rat.IsVisible)
+                {
+                    this.enemyController.MoveEnemy(this.dungeon, rat);
+                }
 
                 key = Console.ReadKey(true).Key;
             }
