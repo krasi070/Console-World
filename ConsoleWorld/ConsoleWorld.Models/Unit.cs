@@ -10,11 +10,6 @@
         private int hp;
         private int mp;
 
-        public Unit()
-        {
-            this.Items = new HashSet<Item>();
-        }
-
         [NotMapped]
         public int X { get; set; }
 
@@ -28,7 +23,7 @@
         public ConsoleColor ForegroundColor { get; set; }
 
         [NotMapped]
-        public ConsoleColor BackgroungColor { get; set; } 
+        public ConsoleColor BackgroundColor { get; set; } 
 
         [Required]
         public string Name { get; set; }
@@ -102,11 +97,9 @@
 
         public virtual Weapon EquippedWeapon { get; set; }
 
-        public virtual ICollection<Item> Items { get; set; }
-
-        public void Draw()
+        public virtual void Draw()
         {
-            Console.BackgroundColor = this.BackgroungColor;
+            Console.BackgroundColor = this.BackgroundColor;
             Console.ForegroundColor = this.ForegroundColor;
             Console.SetCursorPosition(this.X, this.Y);
             Console.Write(this.Symbol);

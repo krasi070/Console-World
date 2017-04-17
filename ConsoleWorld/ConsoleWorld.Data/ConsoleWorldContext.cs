@@ -8,7 +8,7 @@ namespace ConsoleWorld.Data
         public ConsoleWorldContext()
             : base("name=ConsoleWorldContext")
         {
-            Database.SetInitializer(new DropCreateDatabaseAlways<ConsoleWorldContext>());
+            Database.SetInitializer(new ConsoleWorldInitializer());
         }
 
         public virtual DbSet<Character> Characters { get; set; }

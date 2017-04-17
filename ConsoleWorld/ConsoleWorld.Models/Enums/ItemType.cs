@@ -8,7 +8,6 @@
         MagicAttack,
         Defense,
         MagicDefense,
-        Speed,
         Evade,
         Accuracy,
         Key,

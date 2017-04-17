@@ -49,6 +49,8 @@
     <Compile Include="Classes\Robot.cs" />
     <Compile Include="Classes\Thief.cs" />
     <Compile Include="Classes\Viking.cs" />
+    <Compile Include="Enemies\Enemy.cs" />
+    <Compile Include="Enemies\Rat.cs" />
     <Compile Include="Enums\Class.cs" />
     <Compile Include="Enums\Gender.cs" />
     <Compile Include="Enums\ItemType.cs" />

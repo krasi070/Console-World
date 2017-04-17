@@ -12,7 +12,7 @@
         {
             this.Weapons = new HashSet<Weapon>();
             this.Symbol = '@';
-            this.BackgroungColor = ConsoleColor.Black;
+            this.BackgroundColor = ConsoleColor.Black;
             this.ForegroundColor = ConsoleColor.White;
         }
 

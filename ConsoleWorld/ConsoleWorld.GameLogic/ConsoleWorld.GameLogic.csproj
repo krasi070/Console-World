@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\EnemyController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
     <Compile Include="Core\Dungeon.cs" />
     <Compile Include="Core\Engine.cs" />
@@ -59,6 +60,8 @@
     <Compile Include="Enums\Direction.cs" />
     <Compile Include="Enums\TileType.cs" />
     <Compile Include="Geometry\Rectangle.cs" />
+    <Compile Include="Handler\MessageHandler.cs" />
+    <Compile Include="Handler\StatusHandler.cs" />
     <Compile Include="Screens\CharacterCreationScreen.cs" />
     <Compile Include="Screens\CreditsScreen.cs" />
     <Compile Include="Screens\HelpScreen.cs" />

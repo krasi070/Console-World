@@ -5,6 +5,14 @@
 
     public class Item
     {
+        public Item(string name, int price, int percentageIncrease, ItemType type)
+        {
+            this.Name = name;
+            this.Price = price;
+            this.PercentageIncrease = percentageIncrease;
+            this.Type = type;
+        }
+
         public int Id { get; set; }
 
         [Required]

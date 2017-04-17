@@ -3,8 +3,10 @@
     using Enums;
     using Geometry;
     using Models;
+    using Models.Enemies;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Dungeon
     {
@@ -25,6 +27,7 @@
             this.FillTiles();
             this.Rooms = new List<Rectangle>();
             this.Exits = new List<Rectangle>();
+            this.Enemies = new List<Enemy>();
             this.random = new Random();
         }
 
@@ -33,6 +36,8 @@
         public int Height { get; set; }
 
         public List<Tile> Tiles { get; set; }
+
+        public List<Enemy> Enemies { get; set; }
 
         private List<Rectangle> Rooms { get; set; }
 
@@ -90,9 +95,11 @@
             if (tile.IsVisibe)
             {
                 Console.SetCursorPosition(x, y);
-                if (tile.IsDefaultColors)
+                if (tile.IsEnemy)
                 {
-                    Console.Write(tile.Symbol);
+                    var enemy = this.Enemies.FirstOrDefault(e => e.X == x && e.Y == y);
+                    enemy.IsVisible = true;
+                    enemy.Draw();
                 }
                 else
                 {
@@ -142,14 +149,41 @@
             return false;
         }
 
+        public bool PlaceEnemy(Enemy enemy)
+        {
+            if (this.Rooms.Count == 0)
+            {
+                return false;
+            }
+
+            int index = random.Next(this.Rooms.Count);
+            int x = random.Next(this.Rooms[index].X + 1, this.Rooms[index].X + this.Rooms[index].Width - 2);
+            int y = random.Next(this.Rooms[index].Y + 1, this.Rooms[index].Y + this.Rooms[index].Height - 2);
+
+            Tile tile = this.GetTile(x, y);
+            if (tile.Type == TileType.Floor)
+            {
+                enemy.X = x;
+                enemy.Y = y;
+                tile.IsEnemy = true;
+                this.Enemies.Add(enemy);
+                // place one object in one room (optional)
+                this.Rooms.RemoveAt(index);
+
+                return true;
+            }
+
+            return false;
+        }
+
         public void MakeAdjacentTilesVisible(int x, int y)
         {
             for (int i = Math.Max(x - VisibilityRange, 0); i <= Math.Min(x + VisibilityRange, this.Width); i++)
             {
                 for (int j = Math.Max(y - VisibilityRange, 0); j <= Math.Min(y + VisibilityRange, this.Height); j++)
                 {
-                    this.GetTile(i, j).IsVisibe = true;
-
+                    Tile tile = this.GetTile(i, j);
+                    tile.IsVisibe = true;
                     if (i != x || j != y)
                     {
                         this.DrawTile(i, j);
@@ -223,7 +257,14 @@
             {
                 if (this.CreateRoom(x, y, direction))
                 {
-                    this.SetTile(x, y, new Tile(TileType.ClosedDoor));
+                    if (random.Next(100) < 80)
+                    {
+                        this.SetTile(x, y, new Tile(TileType.OpenDoor));
+                    }
+                    else
+                    {
+                        this.SetTile(x, y, new Tile(TileType.ClosedDoor));
+                    }
 
                     return true;
                 }
@@ -234,7 +275,14 @@
                 {
                     if (this.GetTile(x + dX, y + dY).Type == TileType.Floor)
                     {
-                        this.SetTile(x, y, new Tile(TileType.ClosedDoor));
+                        if (random.Next(100) < 80)
+                        {
+                            this.SetTile(x, y, new Tile(TileType.OpenDoor));
+                        }
+                        else
+                        {
+                            this.SetTile(x, y, new Tile(TileType.ClosedDoor));
+                        }
                     }
                     else
                     {
