@@ -57,11 +57,15 @@
     <Compile Include="Core\Engine.cs" />
     <Compile Include="Core\Tile.cs" />
     <Compile Include="Enums\Direction.cs" />
+    <Compile Include="Enums\ImrpoveStatsOption.cs" />
+    <Compile Include="Enums\ItemOption.cs" />
     <Compile Include="Enums\TileType.cs" />
     <Compile Include="Geometry\Rectangle.cs" />
     <Compile Include="Screens\CharacterCreationScreen.cs" />
     <Compile Include="Screens\CreditsScreen.cs" />
     <Compile Include="Screens\HelpScreen.cs" />
+    <Compile Include="Screens\ImproveStatsScreen.cs" />
+    <Compile Include="Screens\ItemsScreen.cs" />
     <Compile Include="Screens\LoadGameScreen.cs" />
     <Compile Include="Enums\StartMenuOption.cs" />
     <Compile Include="Enums\TitleScreenOption.cs" />

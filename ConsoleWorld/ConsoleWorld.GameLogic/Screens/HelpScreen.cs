@@ -20,6 +20,10 @@
             Console.WriteLine("+ - Locked Door");
             Console.SetCursorPosition(45, 20);
             Console.WriteLine("Alphabet letters are the enemies");
+            Console.SetCursorPosition(45, 21);
+            Console.WriteLine("You can move your character with the arrow keys or the WASD keys.");
+            Console.SetCursorPosition(45, 22);
+            Console.WriteLine("You can attack using the X key ");
 
             Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
