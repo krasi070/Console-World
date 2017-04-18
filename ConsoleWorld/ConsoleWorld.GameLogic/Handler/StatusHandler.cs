@@ -11,7 +11,7 @@
         public void Draw(Character character, int dungeonLevel)
         {
             Console.SetCursorPosition(StartX, StartY);
-            Console.Write($"Name: {character.Name}  " + 
+            Console.Write($"Name: {character.Name} the {character.Class.ToString()} " + 
                 $"LVL: {character.LevelId}  " +
                 //$"EXP: {character.Exp} / {character.Level.ExpToNextLevel}  " +
                 $"EXP: {character.Exp} / 1000  " +

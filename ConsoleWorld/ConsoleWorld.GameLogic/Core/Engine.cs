@@ -20,6 +20,7 @@
         private StatusHandler statusHandler;
         private MessageHandler messageHandler;
 
+        private Character character;
         private int dungeonLevel = 1;
         private int dungeonSize = 4;
 
@@ -35,29 +36,59 @@
 
         public void Run()
         {
-            //TitleScreen.Draw();
-            //this.screenHandler.SelectOptionFromTitleScreen();
-            this.dungeon.Generate(dungeonLevel + dungeonSize);
-            // This character is only for testing purposes
-            Character character = new Archer();
-            character.Name = "Archer";
-            this.dungeon.PlacePlayer(character);
-            var rat = new Rat();
-            this.dungeon.PlaceEnemy(rat);
-            this.statusHandler.Draw(character, dungeonLevel);
-            this.messageHandler.BattleMessage(character, rat, 20);
-            ConsoleKey key = Console.ReadKey(true).Key;
+            TitleScreen.Draw();
             while (true)
             {
-                this.playerController.MovePlayer(dungeon, character, key);
-                dungeon.MakeAdjacentTilesVisible(character.X, character.Y);
-                if (rat.IsVisible)
+                if (this.screenHandler.SelectOptionFromTitleScreen())
                 {
-                    this.enemyController.MoveEnemy(this.dungeon, rat);
+                    this.character = this.screenHandler.SelectOptionFromStartMenuScreen();
+                    if (this.character != null)
+                    {
+                        Console.Clear();
+                        this.GameLoop();
+                    }
+                }
+            }
+        }
+
+        private void GameLoop()
+        {
+            bool newDungeonFloor = false;
+            this.CreateNewDungeon();
+            
+            //this.messageHandler.BattleMessage(this.character, rat, 20);
+            while (this.character.IsAlive)
+            {
+                ConsoleKey key = Console.ReadKey(true).Key;
+                this.playerController.MovePlayer(dungeon, this.character, key);
+                if (newDungeonFloor)
+                {
+                    this.CreateNewDungeon();
+                    newDungeonFloor = false;
+                    continue;
                 }
 
-                key = Console.ReadKey(true).Key;
+                dungeon.MakeAdjacentTilesVisible(this.character.X, this.character.Y);
+                foreach (var enemy in this.dungeon.Enemies)
+                {
+                    if (enemy.IsVisible)
+                    {
+                        this.enemyController.MoveEnemy(this.dungeon, enemy);
+                    }
+                }
             }
+        }
+
+        private void CreateNewDungeon()
+        {
+            Console.Clear();
+            this.dungeonLevel++;
+            this.dungeon.Generate(dungeonLevel + dungeonSize);
+            this.dungeon.PlacePlayer(this.character);
+            // this rat is for testing
+            var rat = new Rat();
+            this.dungeon.PlaceEnemy(rat);
+            this.statusHandler.Draw(this.character, dungeonLevel);
         }
     }
 }

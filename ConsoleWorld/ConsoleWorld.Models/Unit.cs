@@ -95,6 +95,15 @@
         [Range(0, int.MaxValue)]
         public int Range { get; set; }
 
+        [NotMapped]
+        public bool IsAlive
+        {
+            get
+            {
+                return this.Hp > 0;
+            }
+        }
+
         public virtual Weapon EquippedWeapon { get; set; }
 
         public virtual void Draw()

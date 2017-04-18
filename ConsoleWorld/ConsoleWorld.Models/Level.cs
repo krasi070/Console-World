@@ -10,6 +10,13 @@
             this.Characters = new HashSet<Character>();
         }
 
+        public Level(int expToNextLevel, int pointsToReceive)
+        {
+            this.ExpToNextLevel = expToNextLevel;
+            this.PointsToReceive = pointsToReceive;
+            this.Characters = new HashSet<Character>();
+        }
+
         [Key]
         public int LevelId { get; set; }
 

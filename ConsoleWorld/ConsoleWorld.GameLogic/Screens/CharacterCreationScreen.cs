@@ -16,14 +16,15 @@
         private const int MinNameLength = 2;
         private const int MaxNameLength = 9;
         private const int NumberOfClasses = 6;
-        private const int ClassesX = 25;
+        private const int ClassesX = 20;
         private const int ClassesY = 18;
         private const int StatsX = 75;
         private const int StatsY = 17;
+        private const int BackspaceCode = 8;
+        private const int EnterCode = 13;
 
-        public static string CharacterName { get; set; }
-
-        public static Class Class { get; set; }
+        private static string characterName = string.Empty;
+        private static Class characterClass = Class.Knight;
 
         public static void Draw()
         {
@@ -31,113 +32,84 @@
             TitleScreen.DrawTitle();
         }
 
-        public static void CreateCharacter()
+        public static Character CreateCharacter()
         {
             NameCharacter();
-            SelectClass();
+            var character = SelectClass();
+
+            return character;
         }
 
-        private static void SelectClass()
+        private static Character SelectClass()
         {
             ConsoleKey key = Console.ReadKey(true).Key;
-            while (key != ConsoleKey.Escape)
+            while (key != ConsoleKey.Enter)
             {
                 switch (key)
                 {
                     case ConsoleKey.DownArrow:
                     case ConsoleKey.S:
                         {
-                            Class = (Class)((int)(Class + 1) % NumberOfClasses);
-                            HighlightClass();
+                            characterClass = (Class)((int)(characterClass + 1) % NumberOfClasses);
+                            HighlightClass(characterClass.ToString());
                         }
                         break;
                     case ConsoleKey.UpArrow:
                     case ConsoleKey.W:
                         {
-                            Class = Class - 1 < 0
+                            characterClass = characterClass - 1 < 0
                             ? Class.Thief
-                            : (Class)(Class - 1);
-                            HighlightClass();
-                        }
-                        break;
-                    case ConsoleKey.Enter:
-                        {
-                            CreateCharacterDb();
-                            Console.SetCursorPosition(TextX, TextY + 2);
-                            Console.WriteLine();
+                            : (Class)(characterClass - 1);
+                            HighlightClass(characterClass.ToString());
                         }
                         break;
                 }
+
                 key = Console.ReadKey(true).Key;
             }
+
+            return CreateCharacterDb();
         }
 
-        private static void CreateCharacterDb()
+        private static Character CreateCharacterDb()
         {
             var character = new Character();
             var ctx = new ConsoleWorldContext();
-            if (Class.ToString() == "Archer")
+            if (characterClass.ToString() == "Archer")
             {
                 character = new Archer();
             }
-            if (Class.ToString() == "Knight")
+            else if (characterClass.ToString() == "Knight")
             {
                 character = new Knight();
             }
-            if (Class.ToString() == "Magician")
+            else if (characterClass.ToString() == "Magician")
             {
                 character = new Magician();
             }
-            if (Class.ToString() == "Robot")
+            else if (characterClass.ToString() == "Robot")
             {
                 character = new Robot();
             }
-            if (Class.ToString() == "Thief")
+            else if (characterClass.ToString() == "Thief")
             {
                 character = new Thief();
             }
-            if (Class.ToString() == "Viking")
+            else if (characterClass.ToString() == "Viking")
             {
                 character = new Viking();
             }
-            character.Name = CharacterName;
-            //character.Level = 0/*;*/
+
+            character.Name = characterName;
             ctx.Characters.Add(character);
             ctx.SaveChanges();
-        }
 
-        private static void HighlightClass()
-        {
-            if (Class == Class.Knight)
-            {
-                KnightChosen();
-            }
-            else if (Class == Class.Viking)
-            {
-                VikingChosen();
-            }
-            else if (Class == Class.Archer)
-            {
-                ArcherChosen();
-            }
-            else if (Class == Class.Magician)
-            {
-                MagicianChosen();
-            }
-            else if (Class == Class.Robot)
-            {
-                RobotChosen();
-            }
-            else if (Class == Class.Thief)
-            {
-                ThiefChosen();
-            }
+            return character;
         }
 
         private static void NameCharacter()
         {
             bool characterIsValid = false;
-
             while (!characterIsValid)
             {
                 Console.CursorVisible = true;
@@ -145,15 +117,14 @@
                 Console.Write("Character Name: ");
                 StringBuilder sb = new StringBuilder();
                 char ch = Console.ReadKey(true).KeyChar;
-                while (ch == 8) ch = Console.ReadKey(true).KeyChar;
-                //if (ch != 8) Console.Write(ch);
-                while (ch != 13)   // 13 = enter key (or other breaking condition)
+                while (ch == BackspaceCode) ch = Console.ReadKey(true).KeyChar;
+                while (ch != EnterCode) 
                 {
                     int backspace = TextX + "Character Name: ".Length + sb.Length;
                     if (sb.Length < MaxNameLength)
                     {
-                        if (ch != 8) Console.Write(ch);
-                        if (ch == 8 && sb.Length >= 1)
+                        if (ch != BackspaceCode) Console.Write(ch);
+                        if (ch == BackspaceCode && sb.Length >= 1)
                         {
                             sb.Remove(sb.Length - 1, 1);
                             Console.SetCursorPosition(backspace - 1, TextY);
@@ -167,7 +138,7 @@
                     }
                     else if (sb.Length == MaxNameLength)
                     {
-                        if (ch == 8)
+                        if (ch == BackspaceCode)
                         {
                             sb.Remove(sb.Length - 1, 1);
                             Console.SetCursorPosition(TextX + "Character Name: ".Length + MaxNameLength - 1, TextY);
@@ -178,13 +149,13 @@
                     ch = Console.ReadKey(true).KeyChar;
                 }
 
-                CharacterName = sb.ToString();
+                characterName = sb.ToString();
 
-                if (CharacterName.Length > MinNameLength)
+                if (characterName.Length > MinNameLength)
                 {
                     var ctx = new ConsoleWorldContext();
 
-                    if (ctx.Characters.Any(c => c.Name == CharacterName))
+                    if (ctx.Characters.Any(c => c.Name == characterName))
                     {
                         // TODO: Check if character exist
                         characterIsValid = false;
@@ -209,43 +180,13 @@
             Console.CursorVisible = false;
             Console.SetCursorPosition(TextX, TextY + 1);
             Console.WriteLine("Choose a class: ");
-            KnightChosen();
+            HighlightClass(characterClass.ToString());
         }
 
-        private static void KnightChosen()
+        private static void HighlightClass(string className)
         {
-            DrawClass("Knight");
-            DrawStats("Knight");
-        }
-
-        private static void VikingChosen()
-        {
-            DrawClass("Viking");
-            DrawStats("Viking");
-        }
-
-        private static void ArcherChosen()
-        {
-            DrawClass("Archer");
-            DrawStats("Archer");
-        }
-
-        private static void MagicianChosen()
-        {
-            DrawClass("Magician");
-            DrawStats("Magician");
-        }
-
-        private static void RobotChosen()
-        {
-            DrawClass("Robot");
-            DrawStats("Robot");
-        }
-
-        private static void ThiefChosen()
-        {
-            DrawClass("Thief");
-            DrawStats("Thief");
+            DrawClass(className);
+            DrawStats(className);
         }
 
         private static void DrawClass(string className)
@@ -258,14 +199,20 @@
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.ForegroundColor = ConsoleColor.Black;
                     Console.SetCursorPosition(ClassesX, ClassesY + i);
-                    Console.WriteLine(character);
+                    Console.WriteLine(
+                        new string(' ', (SelectLength - character.ToString().Length) / 2) + 
+                        character +
+                        new string(' ', (int)((SelectLength - character.ToString().Length) / 2.0)));
                     Console.BackgroundColor = ConsoleColor.Black;
                     Console.ForegroundColor = ConsoleColor.White;
                 }
                 else
                 {
                     Console.SetCursorPosition(ClassesX, ClassesY + i);
-                    Console.WriteLine(character);
+                    Console.WriteLine(
+                        new string(' ', (SelectLength - character.ToString().Length) / 2) +
+                        character +
+                        new string(' ', (int)((SelectLength - character.ToString().Length) / 2.0)));
                 }
 
                 i++;

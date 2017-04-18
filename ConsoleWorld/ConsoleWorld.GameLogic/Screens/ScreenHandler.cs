@@ -1,37 +1,38 @@
 ﻿namespace ConsoleWorld.GameLogic.Screens
 {
     using Enums;
+    using Models;
     using System;
 
     public class ScreenHandler
     {
-        public void SelectOptionFromTitleScreen()
+        // true - start
+        // false - help, credits
+        public bool SelectOptionFromTitleScreen()
         {
-            TitleScreen.CurrentOption = TitleScreenOption.Start;
             TitleScreen.SelectOption();
             switch (TitleScreen.CurrentOption)
             {
                 case TitleScreenOption.Start:
                     StartMenuScreen.Draw();
-                    this.SelectOptionFromStartMenuScreen();
-                    break;
+                    return true;
                 case TitleScreenOption.Help:
-                    
                     HelpScreen.Draw();                   
-                    BackFromHelp();   
-                      break;
-                    
+                    Back();
+                    return false;
                 case TitleScreenOption.Credits:
                     CreditsScreen.Draw();
-                    BackFromHelp();
-                    break;
+                    Back();
+                    return false;
                 case TitleScreenOption.Exit:
                     Environment.Exit(0);
                     break;
             }
+
+            return false;
         }
 
-        public void SelectOptionFromStartMenuScreen()
+        public Character SelectOptionFromStartMenuScreen()
         {
             StartMenuScreen.CurrentOption = StartMenuOption.NewGame;
             StartMenuScreen.SelectOption();
@@ -39,16 +40,17 @@
             {
                 case StartMenuOption.LoadGame:
                     LoadGameScreen.Draw();
-                    break;
+                    return LoadGameScreen.GetCharacter();
                 case StartMenuOption.NewGame:
                     CharacterCreationScreen.Draw();
-                    CharacterCreationScreen.CreateCharacter();
-                    break;
+                    return CharacterCreationScreen.CreateCharacter();
                 case StartMenuOption.Back:
                     TitleScreen.Draw();
-                    this.SelectOptionFromTitleScreen();
+                    //this.SelectOptionFromTitleScreen();
                     break;
             }
+
+            return null;
         }
 
         //public void SelectOptionFromImproveStatsScreen()
@@ -91,7 +93,8 @@
         //            break;
         //    }
         //}
-        public void BackFromHelp()
+
+        public void Back()
         {
             while (true)
             {
@@ -99,11 +102,11 @@
                 if (key == ConsoleKey.Enter)
                 {
                     TitleScreen.Draw();
-                    SelectOptionFromTitleScreen();
                     break;
                 }
             }           
         }
+
         //public void BackFromImproveStats()
         //{
         //    while (true)

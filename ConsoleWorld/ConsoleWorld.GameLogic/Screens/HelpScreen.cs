@@ -1,34 +1,38 @@
 ﻿namespace ConsoleWorld.GameLogic.Screens
 {
     using System;
+
     public static class HelpScreen
     {
+        private const int TextX = 55;
+        private const int TextY = 17;
+
         public static void Draw()
         {
             Console.Clear();
 
             TitleScreen.DrawTitle();
-            Console.SetCursorPosition(55, 15);
+            Console.SetCursorPosition(TextX, TextY);
             Console.WriteLine("@ - Character");
-            Console.SetCursorPosition(55, 16);
+            Console.SetCursorPosition(TextX, TextY + 1);
             Console.WriteLine(". - Floor");
-            Console.SetCursorPosition(55, 17);
+            Console.SetCursorPosition(TextX, TextY + 2);
             Console.WriteLine("% - Item");
-            Console.SetCursorPosition(55, 18);
+            Console.SetCursorPosition(TextX, TextY + 3);
             Console.WriteLine("$ - Money");
-            Console.SetCursorPosition(55, 19);
+            Console.SetCursorPosition(TextX, TextY + 4);
             Console.WriteLine("+ - Locked Door");
-            Console.SetCursorPosition(45, 20);
+            Console.SetCursorPosition(TextX - 10, TextY + 5);
             Console.WriteLine("Alphabet letters are the enemies");
-            Console.SetCursorPosition(45, 21);
+            Console.SetCursorPosition(TextX - 10, TextY + 6);
             Console.WriteLine("You can move your character with the arrow keys or the WASD keys.");
-            Console.SetCursorPosition(45, 22);
+            Console.SetCursorPosition(TextX - 10, TextY + 7);
             Console.WriteLine("You can attack using the X key ");
 
             Console.BackgroundColor = ConsoleColor.White;
             Console.ForegroundColor = ConsoleColor.Black;
-            Console.SetCursorPosition(59, 22);
-            Console.WriteLine("Back");
+            Console.SetCursorPosition(TextX + 1, TextY + 9);
+            Console.WriteLine("   Back   ");
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
         }

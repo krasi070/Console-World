@@ -1,6 +1,7 @@
 ﻿namespace ConsoleWorld.Data
 {
     using Models;
+    using Models.Classes;
     using Models.Enums;
     using System.Collections.Generic;
     using System.Data.Entity;
@@ -42,6 +43,25 @@
             };
 
             context.Items.AddRange(items);
+
+            var levels = new List<Level>()
+            {
+                new Level(100, 1),
+                new Level(250, 1),
+                new Level(600, 2),
+                new Level(1000, 2),
+                new Level(1750, 2)
+            };
+
+            context.Levels.AddRange(levels);
+            context.SaveChanges();
+
+            Character archer = new Archer()
+            {
+                Name = "Steve"
+            };
+
+            context.Characters.Add(archer);
 
             context.SaveChanges();
 

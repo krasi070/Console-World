@@ -2,6 +2,7 @@
 {
     using System;
     using Enums;
+
     public static class TitleScreen
     {
         private const int TitleX = 29;
@@ -11,16 +12,24 @@
         private const int SelectLength = 16;
         private const int NumberOfOptions = 4;
 
-        public static TitleScreenOption CurrentOption { get; set; }
+        public static TitleScreenOption CurrentOption = TitleScreenOption.Start;
         
         public static void Draw()
         {
             Console.Clear();
             DrawTitle();
-            HighlightOption(TitleScreenOption.Start);
-            RemoveHighlight(TitleScreenOption.Help);
-            RemoveHighlight(TitleScreenOption.Credits);
-            RemoveHighlight(TitleScreenOption.Exit);
+            foreach (var option in Enum.GetNames(typeof(TitleScreenOption)))
+            {
+                var titleScreenOption = (TitleScreenOption)Enum.Parse(typeof(TitleScreenOption), option);
+                if (titleScreenOption == CurrentOption)
+                {
+                    HighlightOption(CurrentOption);
+                }
+                else
+                {
+                    RemoveHighlight(titleScreenOption);
+                }
+            }
         }
 
         public static void DrawTitle()

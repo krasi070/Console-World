@@ -12,7 +12,7 @@
         private const int OptionsX = 52;
         private const int OptionsY = 20;
         private const int SelectLength = 16;
-        private const int NumberOfOptions = 8;
+        private const int NumberOfOptions = 9;
         private const int StatsX = 75;
         private const int StatsY = 17;
 
