@@ -56,13 +56,15 @@
             context.Levels.AddRange(levels);
             context.SaveChanges();
 
-            Character archer = new Archer()
+            Character archer = new Thief()
             {
                 Name = "Steve"
             };
 
             context.Characters.Add(archer);
+            context.SaveChanges();
 
+            context.CharacterItems.Add(new CharacterItem(1, 27, 1)); // 27 - Master Key
             context.SaveChanges();
 
             base.Seed(context);

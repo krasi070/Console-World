@@ -16,7 +16,11 @@
         private const int MinCorridorLength = 5;
         private const int MaxCorridorLength = 8;
         private const int VisibilityRange = 1;
+        private const int ItemSpawnChance = 40;
+        private const int MoneySpawnChance = 20;
 
+        private int maxItemSpawns;
+        private int maxMoneySpawns;
         private Random random;
 
         public Dungeon(int width, int height)
@@ -26,8 +30,10 @@
             this.Tiles = new List<Tile>();
             this.FillTiles();
             this.Rooms = new List<Rectangle>();
+            this.Corridors = new List<Rectangle>();
             this.Exits = new List<Rectangle>();
             this.Enemies = new List<Enemy>();
+            this.Items = new Dictionary<int, Item>();
             this.random = new Random();
         }
 
@@ -39,12 +45,18 @@
 
         public List<Enemy> Enemies { get; set; }
 
+        public Dictionary<int, Item> Items { get; set; }
+
         private List<Rectangle> Rooms { get; set; }
+
+        private List<Rectangle> Corridors { get; set; }
 
         private List<Rectangle> Exits { get; set; }
 
         public void Generate(int maxFeatures)
         {
+            this.maxItemSpawns = maxFeatures;
+            this.maxMoneySpawns = maxFeatures;
             // place the first room in the center
             if (!this.CreateRoom(this.Width / 2, this.Height / 2, (Direction)random.Next(4), true))
             {
@@ -76,6 +88,22 @@
 
                 return;
             }
+
+            for (int i = 0; i < this.maxItemSpawns; i++)
+            {
+                if (this.random.Next(100) < ItemSpawnChance)
+                {
+                    this.PlaceObject(TileType.Item);
+                }
+            }
+
+            for (int i = 0; i < this.maxMoneySpawns; i++)
+            {
+                if (this.random.Next(100) < MoneySpawnChance)
+                {
+                    this.PlaceObject(TileType.Money);
+                }
+            }
         }
 
         public void Draw()
@@ -97,7 +125,7 @@
                 Console.SetCursorPosition(x, y);
                 if (tile.IsEnemy)
                 {
-                    var enemy = this.Enemies.FirstOrDefault(e => e.X == x && e.Y == y);
+                    var enemy = this.Enemies.FirstOrDefault(e => e.X == x && e.Y == y);                   
                     enemy.IsVisible = true;
                     enemy.Draw();
                 }
@@ -192,7 +220,7 @@
             }
         }
 
-        private void SetTile(int x, int y, Tile tile)
+        public void SetTile(int x, int y, Tile tile)
         {
             this.Tiles[x + y * this.Width] = tile;
         }
@@ -257,6 +285,7 @@
             {
                 if (this.CreateRoom(x, y, direction))
                 {
+                    this.SetTile(x, y, new Tile(TileType.ClosedDoor));
                     if (random.Next(100) < 80)
                     {
                         this.SetTile(x, y, new Tile(TileType.OpenDoor));
@@ -275,6 +304,7 @@
                 {
                     if (this.GetTile(x + dX, y + dY).Type == TileType.Floor)
                     {
+                        this.SetTile(x, y, new Tile(TileType.ClosedDoor));
                         if (random.Next(100) < 80)
                         {
                             this.SetTile(x, y, new Tile(TileType.OpenDoor));
@@ -536,8 +566,12 @@
             return true;
         }
 
-        private bool PlaceObject(TileType tile)
+        private bool PlaceObject(TileType tile, bool canBeInCorridor = false)
         {
+            //if (canBeInCorridor && this.Rooms.Count == 0 && this)
+            //{
+
+            //}
             if (this.Rooms.Count == 0)
             {
                 return false;
@@ -552,7 +586,7 @@
                 this.SetTile(x, y, new Tile(tile));
 
                 // place one object in one room (optional)
-                this.Rooms.RemoveAt(index);
+                //this.Rooms.RemoveAt(index);
 
                 return true;
             }

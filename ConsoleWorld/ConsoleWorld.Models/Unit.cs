@@ -115,5 +115,14 @@
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
         }
+        public virtual void Draw(ConsoleColor color)
+        {
+            Console.BackgroundColor = this.BackgroundColor;
+            Console.ForegroundColor = color;
+            Console.SetCursorPosition(this.X, this.Y);
+            Console.Write(this.Symbol);
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.White;
+        }
     }
 }

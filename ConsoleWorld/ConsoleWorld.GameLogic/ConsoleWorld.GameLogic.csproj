@@ -65,6 +65,7 @@
     <Compile Include="Handler\StatusHandler.cs" />
     <Compile Include="Screens\CharacterCreationScreen.cs" />
     <Compile Include="Screens\CreditsScreen.cs" />
+    <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\HelpScreen.cs" />
     <Compile Include="Screens\ImproveStatsScreen.cs" />
     <Compile Include="Screens\ItemsScreen.cs" />
