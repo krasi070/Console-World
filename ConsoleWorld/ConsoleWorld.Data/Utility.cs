@@ -2,6 +2,7 @@
 {
     using Models;
     using System.Linq;
+    using System.Collections.Generic;
 
     public static class Utility
     {
@@ -28,6 +29,13 @@
             using (var context = new ConsoleWorldContext())
             {
                 return context.Characters.FirstOrDefault(c => c.Name == name);
+            }
+        }
+        public static List<CharacterItem> GetItems()
+        {
+            using (var context = new ConsoleWorldContext())
+            {
+                return context.CharacterItems.ToList();
             }
         }
     }
