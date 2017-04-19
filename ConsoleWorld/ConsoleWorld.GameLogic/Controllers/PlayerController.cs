@@ -1,26 +1,25 @@
-﻿using System.Diagnostics;
-using System.Threading;
-using ConsoleWorld.Models.Enemies;
-
-namespace ConsoleWorld.GameLogic.Controllers
+﻿namespace ConsoleWorld.GameLogic.Controllers
 {
     using Core;
     using Data;
     using Enums;
     using Models;
     using System;
+    using System.Diagnostics;
+    using System.Threading;
+    using Models.Enemies;
+    using Handler;
 
     public class PlayerController
     {
-
-
         private Random random = new Random();
+        private MessageHandler messageHandler = new MessageHandler();
 
         // returns true if status needs to be updated
         public bool MovePlayer(Dungeon dungeon, Character character, ConsoleKey key)
-
         {
-            Tile tile = null;
+            this.messageHandler.EraseMessage();
+            Tile tile = new Tile(TileType.Unused);
             switch (key)
             {
                 case ConsoleKey.W:
@@ -138,6 +137,59 @@ namespace ConsoleWorld.GameLogic.Controllers
             return this.CheckIfCharacterIsOnSpecialTile(dungeon, character, tile);
         }
 
+        public void EnemyInRange(Character character, Dungeon dungeon, Enemy enemy)
+        {
+            for (int i = Math.Max(character.X - character.Range, 0); i <= Math.Min(character.X + character.Range, dungeon.Width); i++)
+            {
+                for (int j = Math.Max(character.Y - character.Range, 0); j <= Math.Min(character.Y + character.Range, dungeon.Height); j++)
+                {
+                    Tile tile = dungeon.GetTile(i, j);
+                    if (tile.IsEnemy)
+                    {
+                        if (random.Next(100) > enemy.Evade && random.Next(100) < character.Accuracy)
+                        {
+                            if (character.EquippedWeapon != null)
+                            {
+                                if (character.MagicAttack + character.EquippedWeapon.MagicPower >
+                                    character.Attack + character.EquippedWeapon.Damage && character.Mp > 0)
+                                {
+                                    enemy.Hp -= Math.Max((character.MagicAttack + character.EquippedWeapon.MagicPower) -
+                                                enemy.MagicDefense, 0);
+                                    character.Mp--;
+                                }
+                                else
+                                {
+                                    enemy.Hp -= Math.Max((character.Attack + character.EquippedWeapon.Damage)
+                                        - enemy.Defense, 0);
+                                }
+                            }
+                            else
+                            {
+                                if (character.MagicAttack > character.Attack && character.Mp > 0)
+                                {
+                                    enemy.Hp -= Math.Max(character.MagicAttack - enemy.MagicDefense, 0);
+                                    character.Mp--;
+                                }
+                                else
+                                {
+                                    enemy.Hp -= Math.Max(character.Attack - enemy.Defense, 0);
+                                }
+                            }
+
+                            Console.SetCursorPosition(i, j);
+                            character.Draw(ConsoleColor.Red);
+                            Stopwatch stopWatch = new Stopwatch();
+                            stopWatch.Start();
+                            Thread.Sleep(50);
+                            stopWatch.Stop();
+                            Console.SetCursorPosition(i, j);
+                            character.Draw();
+                        }
+                    }
+                }
+            }
+        }
+
         private void UnlockDoor(Dungeon dungeon, int x, int y)
         {
             dungeon.SetTile(x, y, new Tile(TileType.OpenDoor));
@@ -161,68 +213,30 @@ namespace ConsoleWorld.GameLogic.Controllers
                 case TileType.MagicWell:
                     break;
                 case TileType.Money:
-                    character.Money += random.Next(1, 11);
-                    dungeon.SetTile(character.X, character.Y, new Tile(TileType.Floor));
+                    this.PickUpMoney(dungeon, character);
                     return true;
                 case TileType.Item:
-                    break;
+                    this.PickUpItem(dungeon, character);
+                    return true;
             }
 
             return false;
         }
 
-        public void EnemyInRange(Character character,Dungeon dungeon,Enemy enemy)
+        private void PickUpMoney(Dungeon dungeon, Character character)
         {
-            for (int i = Math.Max(character.X-character.Range, 0); i <= Math.Min(character.X + character.Range, dungeon.Width); i++)
-            {
-                for (int j = Math.Max(character.Y - character.Range, 0); j <= Math.Min(character.Y + character.Range, dungeon.Height); j++)
-                {
-                    Tile tile = dungeon.GetTile(i,j);
-                    if (tile.IsEnemy)
-                    {
-                        if (random.Next(100) > enemy.Evade && random.Next(100) < character.Accuracy)
-                        {
-                            if (character.EquippedWeapon != null)
-                            {
-                                if (character.MagicAttack + character.EquippedWeapon.MagicPower >
-                                    character.Attack + character.EquippedWeapon.Damage && character.Mp > 0)
-                                {
-                                    enemy.Hp -= Math.Max((character.MagicAttack + character.EquippedWeapon.MagicPower) -
-                                                enemy.MagicDefense,0);
-                                    character.Mp--;
-                                }
-                                else
-                                {
-                                    enemy.Hp -= Math.Max((character.Attack + character.EquippedWeapon.Damage) 
-                                        - enemy.Defense,0);
-                                }
-                            }
-                            else
-                            {
-                                if(character.MagicAttack  > character.Attack && character.Mp > 0)
-                                {
-                                    enemy.Hp -= Math.Max(character.MagicAttack - enemy.MagicDefense,0);
-                                    character.Mp--;
-                                }
-                                else
-                                {
-                                    enemy.Hp -= Math.Max(character.Attack  - enemy.Defense,0);
-                                }
-                            }
-                            Console.SetCursorPosition(i, j);
-                            character.Draw(ConsoleColor.Red);
-                            Stopwatch stopWatch = new Stopwatch();
-                            stopWatch.Start();
-                            Thread.Sleep(50);
-                            stopWatch.Stop();
-                            Console.SetCursorPosition(i, j);
-                            character.Draw();
-                        }
-                    }
-                }
-            }
-           
+            int amount = random.Next(1, 11);
+            character.Money += random.Next(1, 11);
+            dungeon.SetTile(character.X, character.Y, new Tile(TileType.Floor));
+            this.messageHandler.MoneyMessage(character, amount);
         }
-        
+
+        private void PickUpItem(Dungeon dungeon, Character character)
+        {
+            Utility.AddItemToCharacter(character.Id, dungeon.Items[character.X + character.Y * dungeon.Width].Id);
+            this.messageHandler.ItemMessage(character, dungeon.Items[character.X + character.Y * dungeon.Width]);
+            dungeon.Items.Remove(character.X + character.Y * dungeon.Width);
+            dungeon.SetTile(character.X, character.Y, new Tile(TileType.Floor));
+        }
     }
 }

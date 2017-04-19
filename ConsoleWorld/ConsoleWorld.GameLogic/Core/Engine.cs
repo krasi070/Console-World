@@ -1,21 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace ConsoleWorld.GameLogic.Core
+﻿namespace ConsoleWorld.GameLogic.Core
 {
     using Controllers;
     using Handler;
     using Models;
-    using Models.Classes;
     using Models.Enemies;
     using Screens;
     using System;
+    using System.Collections.Generic;
 
     public class Engine
     {
         private const int DungeonX = 120;
         private const int DungeonY = 24;
-        
+        private const int DungeonSize = 4;
 
         private ScreenHandler screenHandler;
         private PlayerController playerController;
@@ -25,8 +22,7 @@ namespace ConsoleWorld.GameLogic.Core
         private MessageHandler messageHandler;
 
         private Character character;
-        private int dungeonLevel = 1;
-        private int dungeonSize = 4;
+        private int dungeonLevel = 0;
         private int chp;
         private int ehp;
         private List<Enemy> eindex;
@@ -36,7 +32,6 @@ namespace ConsoleWorld.GameLogic.Core
             this.screenHandler = new ScreenHandler();
             this.playerController = new PlayerController();
             this.enemyController = new EnemyController();
-            this.dungeon = new Dungeon(DungeonX, DungeonY);
             this.statusHandler = new StatusHandler();
             this.messageHandler = new MessageHandler();
             this.eindex = new List<Enemy>();
@@ -75,7 +70,8 @@ namespace ConsoleWorld.GameLogic.Core
                 {
                     this.statusHandler.Draw(this.character, dungeonLevel);
                 }
-                for (int i=0;i<dungeon.Enemies.Count;i++)
+
+                for (int i = 0; i < dungeon.Enemies.Count; i++) 
                 {
                     this.playerController.EnemyInRange(character,dungeon, dungeon.Enemies[i]);
                     if (dungeon.Enemies[i].Hp <= 0)
@@ -84,6 +80,7 @@ namespace ConsoleWorld.GameLogic.Core
                         dungeon.GetTile(dungeon.Enemies[i].X, dungeon.Enemies[i].Y).IsEnemy = false;
                         eindex.Add(dungeon.Enemies[i]);
                     }
+
                     ehp = dungeon.Enemies[i].Hp;
                     Console.SetCursorPosition(96, 28);
                     Console.WriteLine(ehp);
@@ -93,10 +90,8 @@ namespace ConsoleWorld.GameLogic.Core
                 {
                     dungeon.Enemies.Remove(e);
                 }
+
                 chp = character.Hp;
-
-                
-
 
                 if (newDungeonFloor)
                 {
@@ -104,7 +99,8 @@ namespace ConsoleWorld.GameLogic.Core
                     newDungeonFloor = false;
                     continue;
                 }
-                Console.SetCursorPosition(90,28);
+
+                Console.SetCursorPosition(90, 28);
                 Console.WriteLine(chp);
                 dungeon.MakeAdjacentTilesVisible(this.character.X, this.character.Y);
                 foreach (var enemy in this.dungeon.Enemies)
@@ -112,12 +108,12 @@ namespace ConsoleWorld.GameLogic.Core
                     if (enemy.IsVisible)
                     {
                         this.enemyController.MoveEnemy(this.dungeon, enemy);
-                        this.enemyController.PlayerInRange(enemy,dungeon,character);
-                        
+                        this.enemyController.PlayerInRange(enemy, dungeon, character);
                     }
                 }
                 
             }
+
             Console.Clear();
             GameOver();
         }
@@ -126,13 +122,19 @@ namespace ConsoleWorld.GameLogic.Core
         {
             Console.Clear();
             this.dungeonLevel++;
-            this.dungeon.Generate(dungeonLevel + dungeonSize);
+            this.dungeon = new Dungeon(DungeonX, DungeonY);
+            this.dungeon.Generate(dungeonLevel + DungeonSize);
+            while (this.dungeon.Rooms.Count == 0)
+            {
+                this.dungeon = new Dungeon(DungeonX, DungeonY);
+                this.dungeon.Generate(dungeonLevel + DungeonSize);
+            }
+
             this.dungeon.PlacePlayer(this.character);
             // this rat is for testing
             var rat = new Rat();
             this.dungeon.PlaceEnemy(rat);
             this.statusHandler.Draw(this.character, dungeonLevel);
-            
         }
 
         private void GameOver()

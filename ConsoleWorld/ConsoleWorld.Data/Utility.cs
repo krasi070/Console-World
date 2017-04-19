@@ -86,11 +86,44 @@
                 }
             }
         }
-        public static List<CharacterItem> GetItems()
+
+        public static List<CharacterItem> GetCharacterItems()
         {
             using (var context = new ConsoleWorldContext())
             {
                 return context.CharacterItems.ToList();
+            }
+        }
+
+        public static List<Item> GetItems()
+        {
+            List<Item> items = new List<Item>();
+            using (var context = new ConsoleWorldContext())
+            {
+                items.AddRange(context.Items.ToList());
+            }
+
+            return items;
+        }
+
+        public static void AddItemToCharacter(int characterId, int itemId)
+        {
+            using (var context = new ConsoleWorldContext())
+            {
+                if (context.Characters.Any(c => c.Id == characterId) && context.Items.Any(i => i.Id == itemId))
+                {
+                    var characterItem = context.CharacterItems.FirstOrDefault(ci => ci.CharacterId == characterId && ci.ItemId == itemId);
+                    if (characterItem != null)
+                    {
+                        characterItem.Quantity++;
+                    }
+                    else
+                    {
+                        context.CharacterItems.Add(new CharacterItem(characterId, itemId, 1));
+                    }
+
+                    context.SaveChanges();
+                }
             }
         }
     }

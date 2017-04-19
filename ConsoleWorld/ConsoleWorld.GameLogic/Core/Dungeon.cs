@@ -1,5 +1,6 @@
 ﻿namespace ConsoleWorld.GameLogic.Core
 {
+    using Data;
     using Enums;
     using Geometry;
     using Models;
@@ -16,7 +17,7 @@
         private const int MinCorridorLength = 5;
         private const int MaxCorridorLength = 8;
         private const int VisibilityRange = 1;
-        private const int ItemSpawnChance = 40;
+        private const int ItemSpawnChance = 100;
         private const int MoneySpawnChance = 20;
 
         private int maxItemSpawns;
@@ -30,7 +31,6 @@
             this.Tiles = new List<Tile>();
             this.FillTiles();
             this.Rooms = new List<Rectangle>();
-            this.Corridors = new List<Rectangle>();
             this.Exits = new List<Rectangle>();
             this.Enemies = new List<Enemy>();
             this.Items = new Dictionary<int, Item>();
@@ -47,9 +47,7 @@
 
         public Dictionary<int, Item> Items { get; set; }
 
-        private List<Rectangle> Rooms { get; set; }
-
-        private List<Rectangle> Corridors { get; set; }
+        public List<Rectangle> Rooms { get; set; }
 
         private List<Rectangle> Exits { get; set; }
 
@@ -57,12 +55,10 @@
         {
             this.maxItemSpawns = maxFeatures;
             this.maxMoneySpawns = maxFeatures;
-            // place the first room in the center
-            if (!this.CreateRoom(this.Width / 2, this.Height / 2, (Direction)random.Next(4), true))
-            {
-                Console.WriteLine("Unable to place the first room.");
 
-                return;
+            // place the first room in the center
+            while (!this.CreateRoom(this.Width / 2, this.Height / 2, (Direction)random.Next(4), true))
+            {
             }
 
             // we already placed 1 feature (the first room)
@@ -75,25 +71,19 @@
                 }
             }
 
-            if (!this.PlaceObject(TileType.UpStairs))
+            while (!this.PlaceObject(TileType.UpStairs))
             {
-                Console.WriteLine("Unable to place up stairs.");
-
-                return;
             }
 
-            if (!this.PlaceObject(TileType.DownStairs))
+            while (!this.PlaceObject(TileType.DownStairs))
             {
-                Console.WriteLine("Unable to place down stairs.");
-
-                return;
             }
 
             for (int i = 0; i < this.maxItemSpawns; i++)
             {
                 if (this.random.Next(100) < ItemSpawnChance)
                 {
-                    this.PlaceObject(TileType.Item);
+                    this.PlaceObject(TileType.Item, true);
                 }
             }
 
@@ -150,31 +140,26 @@
             return this.Tiles[x + y * this.Width];
         }
 
-        public bool PlacePlayer(Character character)
+        public void PlacePlayer(Character character)
         {
-            if (this.Rooms.Count == 0)
-            {
-                return false;
-            }
-
             int index = random.Next(this.Rooms.Count);
             int x = random.Next(this.Rooms[index].X + 1, this.Rooms[index].X + this.Rooms[index].Width - 2);
             int y = random.Next(this.Rooms[index].Y + 1, this.Rooms[index].Y + this.Rooms[index].Height - 2);
 
-            if (this.GetTile(x, y).Type == TileType.Floor)
+            while (this.GetTile(x, y).Type != TileType.Floor)
             {
-                character.X = x;
-                character.Y = y;
-                character.Draw();
-                this.MakeAdjacentTilesVisible(character.X, character.Y);
-
-                // place one object in one room (optional)
-                this.Rooms.RemoveAt(index);
-
-                return true;
+                index = random.Next(this.Rooms.Count);
+                x = random.Next(this.Rooms[index].X + 1, this.Rooms[index].X + this.Rooms[index].Width - 2);
+                y = random.Next(this.Rooms[index].Y + 1, this.Rooms[index].Y + this.Rooms[index].Height - 2);
             }
 
-            return false;
+            character.X = x;
+            character.Y = y;
+            character.Draw();
+            this.MakeAdjacentTilesVisible(character.X, character.Y);
+
+            // place one object in one room (optional)
+            this.Rooms.RemoveAt(index);
         }
 
         public bool PlaceEnemy(Enemy enemy)
@@ -566,12 +551,8 @@
             return true;
         }
 
-        private bool PlaceObject(TileType tile, bool canBeInCorridor = false)
+        private bool PlaceObject(TileType tile, bool isItem = false)
         {
-            //if (canBeInCorridor && this.Rooms.Count == 0 && this)
-            //{
-
-            //}
             if (this.Rooms.Count == 0)
             {
                 return false;
@@ -584,9 +565,17 @@
             if (this.GetTile(x, y).Type == TileType.Floor)
             {
                 this.SetTile(x, y, new Tile(tile));
+                if (isItem)
+                {
+                    var items = Utility.GetItems();
+                    int i = random.Next(items.Count);
+                    if (items[i].Name == "Master Key")
+                    {
+                        i++;
+                    }
 
-                // place one object in one room (optional)
-                //this.Rooms.RemoveAt(index);
+                    this.Items.Add(x + y * this.Width, items[i]);
+                }
 
                 return true;
             }
