@@ -97,7 +97,7 @@
                 Console.SetCursorPosition(x, y);
                 if (tile.IsEnemy)
                 {
-                    var enemy = this.Enemies.FirstOrDefault(e => e.X == x && e.Y == y);
+                    var enemy = this.Enemies.FirstOrDefault(e => e.X == x && e.Y == y);                   
                     enemy.IsVisible = true;
                     enemy.Draw();
                 }

@@ -13,6 +13,7 @@
             this.SetValueForIsFree();
             this.IsVisibe = false;
             this.IsEnemy = false;
+            this.IsPlayer = false;
         }
 
         public char Symbol { get; set; }
@@ -28,6 +29,8 @@
         public bool IsFree { get; set; }
 
         public bool IsEnemy { get; set; }
+
+        public bool IsPlayer { get; set; }
 
         private void SetColorsForType()
         {
