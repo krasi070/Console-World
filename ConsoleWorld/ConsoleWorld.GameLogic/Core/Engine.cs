@@ -70,8 +70,12 @@ namespace ConsoleWorld.GameLogic.Core
             {
                 
                 ConsoleKey key = Console.ReadKey(true).Key;
-                this.playerController.MovePlayer(dungeon, this.character, key);
-                for(int i=0;i<dungeon.Enemies.Count;i++)
+
+                if (this.playerController.MovePlayer(dungeon, this.character, key))
+                {
+                    this.statusHandler.Draw(this.character, dungeonLevel);
+                }
+                for (int i=0;i<dungeon.Enemies.Count;i++)
                 {
                     this.playerController.EnemyInRange(character,dungeon, dungeon.Enemies[i]);
                     if (dungeon.Enemies[i].Hp <= 0)
@@ -90,6 +94,10 @@ namespace ConsoleWorld.GameLogic.Core
                     dungeon.Enemies.Remove(e);
                 }
                 chp = character.Hp;
+
+                
+
+
                 if (newDungeonFloor)
                 {
                     this.CreateNewDungeon();

@@ -9,6 +9,9 @@
         ClosedDoor = '+',
         OpenDoor = '-',
         UpStairs = '<',
-        DownStairs = '>'
+        DownStairs = '>',
+        MagicWell = '=',
+        Money = '$',
+        Item = '%'
     }
 }

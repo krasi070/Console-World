@@ -56,6 +56,18 @@
                     this.BackgroundColor = ConsoleColor.Yellow;
                     this.ForegroundColor = ConsoleColor.Black;
                     break;
+                case TileType.Item:
+                    this.BackgroundColor = ConsoleColor.Black;
+                    this.ForegroundColor = ConsoleColor.Yellow;
+                    break;
+                case TileType.Money:
+                    this.BackgroundColor = ConsoleColor.Black;
+                    this.ForegroundColor = ConsoleColor.Green;
+                    break;
+                case TileType.MagicWell:
+                    this.BackgroundColor = ConsoleColor.Black;
+                    this.ForegroundColor = ConsoleColor.Gray;
+                    break;
             }
         }
 
@@ -81,6 +93,15 @@
                 case TileType.DownStairs:
                     this.Symbol = '>';
                     break;
+                case TileType.Item:
+                    this.Symbol = '%';
+                    break;
+                case TileType.Money:
+                    this.Symbol = '$';
+                    break;
+                case TileType.MagicWell:
+                    this.Symbol = '=';
+                    break;
             }
         }
 
@@ -98,6 +119,9 @@
                 case TileType.OpenDoor:
                 case TileType.UpStairs:
                 case TileType.DownStairs:
+                case TileType.Item:
+                case TileType.Money:
+                case TileType.MagicWell:
                     this.IsFree = true;
                     break;
             }
