@@ -10,9 +10,8 @@
         {
             SetConsoleValues();
             Engine engine = new Engine();
-            //engine.Run();
-            ItemsScreen.ListItems();
-            ItemsScreen.SelectOption();
+            engine.Run();
+            
             //TitleScreen.Draw();
         }
 

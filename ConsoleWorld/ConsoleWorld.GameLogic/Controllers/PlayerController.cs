@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Threading;
+using ConsoleWorld.GameLogic.Screens;
 using ConsoleWorld.Models.Enemies;
 
 namespace ConsoleWorld.GameLogic.Controllers
@@ -16,11 +17,29 @@ namespace ConsoleWorld.GameLogic.Controllers
 
         private Random random = new Random();
 
+        public bool Action(ScreenHandler screenHandler,Dungeon dungeon, Character character, ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.W:
+                case ConsoleKey.UpArrow:
+                case ConsoleKey.S:
+                case ConsoleKey.DownArrow:
+                case ConsoleKey.D:
+                case ConsoleKey.RightArrow:
+                case ConsoleKey.A:
+                case ConsoleKey.LeftArrow:
+                    return MovePlayer(dungeon, character, key);
+                case ConsoleKey.O:screenHandler.SelectOptionFromImproveStatsScreen(dungeon,character);
+                    return true;
+            }
+            return false;
+        }
         // returns true if status needs to be updated
         public bool MovePlayer(Dungeon dungeon, Character character, ConsoleKey key)
 
         {
-            Tile tile = null;
+            Tile tile = new Tile(TileType.Unused);
             switch (key)
             {
                 case ConsoleKey.W:
@@ -133,6 +152,7 @@ namespace ConsoleWorld.GameLogic.Controllers
                         }
                     }
                     break;
+                
             }
 
             return this.CheckIfCharacterIsOnSpecialTile(dungeon, character, tile);

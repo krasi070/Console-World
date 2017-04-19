@@ -70,11 +70,12 @@ namespace ConsoleWorld.GameLogic.Core
             {
                 
                 ConsoleKey key = Console.ReadKey(true).Key;
-
-                if (this.playerController.MovePlayer(dungeon, this.character, key))
+                
+                if (this.playerController.Action(screenHandler,dungeon, this.character, key))
                 {
                     this.statusHandler.Draw(this.character, dungeonLevel);
                 }
+                
                 for (int i=0;i<dungeon.Enemies.Count;i++)
                 {
                     this.playerController.EnemyInRange(character,dungeon, dungeon.Enemies[i]);

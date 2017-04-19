@@ -1,4 +1,6 @@
-﻿namespace ConsoleWorld.GameLogic.Screens
+﻿using ConsoleWorld.GameLogic.Core;
+
+namespace ConsoleWorld.GameLogic.Screens
 {
     using Enums;
     using Models;
@@ -53,46 +55,12 @@
             return null;
         }
 
-        //public void SelectOptionFromImproveStatsScreen()
-        //{
-        //    ImproveStatsScreen.CurrentOption = ImproveStatsOption.MaxHp;
-        //    ImproveStatsScreen.SelectOption();
-
-        //    switch (ImproveStatsScreen.CurrentOption)
-        //    {
-        //        case ImproveStatsOption.MaxHp:
-        //            LoadGameScreen.Draw();
-        //            break;
-        //        case ImproveStatsOption.MaxMp:
-        //            CharacterCreationScreen.Draw();
-        //            CharacterCreationScreen.CreateCharacter();
-        //            break;
-        //        case ImproveStatsOption.Attack:
-        //            TitleScreen.Draw();
-        //            this.SelectOptionFromTitleScreen();
-        //            break;
-        //        case ImproveStatsOption.MagicAttack:
-        //            TitleScreen.Draw();
-        //            this.SelectOptionFromTitleScreen();
-        //            break;
-        //        case ImproveStatsOption.Defense:
-        //            TitleScreen.Draw();
-        //            this.SelectOptionFromTitleScreen();
-        //            break;
-        //        case ImproveStatsOption.MagicDefense:
-        //            TitleScreen.Draw();
-        //            this.SelectOptionFromTitleScreen();
-        //            break;
-        //        case ImproveStatsOption.Evade:
-        //            TitleScreen.Draw();
-        //            this.SelectOptionFromTitleScreen();
-        //            break;
-        //        case ImproveStatsOption.Accuracy:
-        //            TitleScreen.Draw();
-        //            this.SelectOptionFromTitleScreen();
-        //            break;
-        //    }
-        //}
+        public void SelectOptionFromImproveStatsScreen(Dungeon dungeon,Character character)
+        {
+            ImproveStatsScreen.Draw(character);
+            if(ImproveStatsScreen.SelectOption(character))
+            BackFromImproveStats(dungeon,character);
+        }
 
         public void Back()
         {
@@ -107,17 +75,12 @@
             }           
         }
 
-        //public void BackFromImproveStats()
-        //{
-        //    while (true)
-        //    {
-        //        ConsoleKey key = Console.ReadKey(true).Key;
-        //        if(key == ConsoleKey.Enter)
-        //        {
-        //            //TODO: Return to game
-        //            break;
-        //        }
-        //    }
-        //}
+        public void BackFromImproveStats(Dungeon dungeon,Character character)
+        {
+
+                    Console.Clear();
+                    dungeon.Draw();
+                    character.Draw();            
+        }
     }
 }
