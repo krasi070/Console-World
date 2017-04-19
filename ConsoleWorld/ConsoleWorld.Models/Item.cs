@@ -5,6 +5,9 @@
 
     public class Item
     {
+        public Item()
+        { }
+
         public Item(string name, int price, int percentageIncrease, ItemType type)
         {
             this.Name = name;

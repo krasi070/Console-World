@@ -4,6 +4,17 @@
 
     public class CharacterItem
     {
+        public CharacterItem()
+        {
+        }
+
+        public CharacterItem(int characterId, int itemId, int quantity)
+        {
+            this.CharacterId = characterId;
+            this.ItemId = itemId;
+            this.Quantity = quantity;
+        }
+
         public int CharacterId { get; set; }
 
         public virtual Character Character { get; set; }

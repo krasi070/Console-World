@@ -60,7 +60,11 @@
             while (this.character.IsAlive)
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
-                this.playerController.MovePlayer(dungeon, this.character, key);
+                if (this.playerController.MovePlayer(dungeon, this.character, key))
+                {
+                    this.statusHandler.Draw(this.character, dungeonLevel);
+                }
+
                 if (newDungeonFloor)
                 {
                     this.CreateNewDungeon();
