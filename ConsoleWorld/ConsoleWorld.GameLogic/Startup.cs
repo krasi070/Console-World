@@ -21,8 +21,8 @@
             Console.CursorVisible = false;
             Console.WindowWidth = 120;
             Console.WindowHeight = 30;
-            //Console.BufferWidth = Console.WindowWidth;
-            //Console.BufferHeight = Console.WindowHeight;
+            Console.BufferWidth = Console.WindowWidth;
+            Console.BufferHeight = Console.WindowHeight;
         }
     }
 }

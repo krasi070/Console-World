@@ -122,17 +122,21 @@ namespace ConsoleWorld.GameLogic.Screens
                             {
                                 character.Hp += Math.Min(character.MaxHp,
                                     character.Hp + item.PercentageIncrease * character.Hp / 100);
-                                    
-                            }
+                                    Utility.RemoveOneItemFromCharacter(character.Id, currItem);
+                                    dictionary[currItem] -= 1;
+                                    Highlight(count, dictionary);
+
+                                }
 
                             if (item.Type == ItemType.Mp)
                             {
                                 character.Mp += Math.Min(character.MaxMp,
                                     character.Mp + item.PercentageIncrease * character.Mp / 100);
-                            }
-                            Utility.RemoveOneItemFromCharacter(character.Id,currItem);
-                            dictionary[currItem] -= 1;
-                                Highlight(count,dictionary);
+                                    Utility.RemoveOneItemFromCharacter(character.Id, currItem);
+                                    dictionary[currItem] -= 1;
+                                    Highlight(count, dictionary);
+                                }
+                            
                         }
                             else if (currItem == "Back")
                         {
