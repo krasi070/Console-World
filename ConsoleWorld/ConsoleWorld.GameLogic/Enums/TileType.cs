@@ -8,8 +8,7 @@
         Wall = '#',
         ClosedDoor = '+',
         OpenDoor = '-',
-        UpStairs = '<',
-        DownStairs = '>',
+        Hole = 'o',
         MagicWell = '=',
         Money = '$',
         Item = '%'

@@ -2,25 +2,25 @@
 {
     using System;
 
-    public class Rat : Enemy
+    public class Zombie : Enemy
     {
-        public const int DefaultHp = 50;
+        public const int DefaultHp = 100;
         public const int DefaultMp = 0;
-        public const int DefaultAttack = 15;
+        public const int DefaultAttack = 30;
         public const int DefaultMagicAttack = 0;
-        public const int DefaultDefense = 5;
+        public const int DefaultDefense = 0;
         public const int DefaultMagicDefense = 0;
-        public const int DefaultEvade = 10;
-        public const int DefaultAccuracy = 80;
+        public const int DefaultEvade = 2;
+        public const int DefaultAccuracy = 90;
         public const int DefaultRange = 1;
-        public const int DefaultExpReward = 35;
-        public const int DefaultMoneyReward = 3;
-        public const char DefaultSymbol = 'r';
-        public const string DefaultName = "Rat";
+        public const int DefaultExpReward = 100;
+        public const int DefaultMoneyReward = 7;
+        public const char DefaultSymbol = 'z';
+        public const string DefaultName = "Zombie";
         public const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;
-        public const ConsoleColor DefaultForegroundColor = ConsoleColor.Magenta;
+        public const ConsoleColor DefaultForegroundColor = ConsoleColor.DarkGreen;
 
-        public Rat()
+        public Zombie()
             : base()
         {
             this.MaxHp = DefaultHp;
@@ -42,7 +42,7 @@
             this.ForegroundColor = DefaultForegroundColor;
         }
 
-        public Rat(int level = 1)
+        public Zombie(int level = 1)
             : base()
         {
             this.Level = level;

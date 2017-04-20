@@ -39,8 +39,7 @@
                 case TileType.Unused:
                 case TileType.Floor:
                 case TileType.Corridor:
-                case TileType.UpStairs:
-                case TileType.DownStairs:
+                case TileType.Hole:
                     this.BackgroundColor = ConsoleColor.Black;
                     this.ForegroundColor = ConsoleColor.White;
                     break;
@@ -87,11 +86,8 @@
                 case TileType.ClosedDoor:
                     this.Symbol = '+';
                     break;
-                case TileType.UpStairs:
-                    this.Symbol = '<';
-                    break;
-                case TileType.DownStairs:
-                    this.Symbol = '>';
+                case TileType.Hole:
+                    this.Symbol = 'o';
                     break;
                 case TileType.Item:
                     this.Symbol = '%';
@@ -117,8 +113,7 @@
                 case TileType.Floor:
                 case TileType.Corridor:
                 case TileType.OpenDoor:
-                case TileType.UpStairs:
-                case TileType.DownStairs:
+                case TileType.Hole:
                 case TileType.Item:
                 case TileType.Money:
                 case TileType.MagicWell:

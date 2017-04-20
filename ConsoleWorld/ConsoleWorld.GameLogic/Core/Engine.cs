@@ -46,11 +46,13 @@
                     this.character = this.screenHandler.SelectOptionFromStartMenuScreen();
                     if (this.character != null)
                     {
-                        this.character.Money = 10;
+                        this.dungeonLevel = character.DungeonLevel - 1;
                         Console.Clear();
                         
                         this.GameLoop();
                     }
+
+                    dungeonLevel = 0;
                 }
             }
         }
@@ -65,17 +67,26 @@
             {
                 ConsoleKey key = Console.ReadKey(true).Key;
 
-                if (this.playerController.Action(screenHandler, dungeon, this.character, key))
+                // 0 - nothing
+                // 1 - update status
+                // 2 - next dungeon
+                int code = this.playerController.Action(screenHandler, dungeon, this.character, key);
+                if (code == 1)
                 {
                     this.statusHandler.Draw(this.character, dungeonLevel);
+                }
+                else if (code == 2)
+                {
+                    newDungeonFloor = true;
                 }
 
                 foreach (var enemyPair in this.dungeon.Enemies) 
                 {
-                    if (enemyPair.Value.Hp <= 0)
+                    if (!enemyPair.Value.IsAlive)
                     {
                         dungeon.DrawTile(enemyPair.Value.X, enemyPair.Value.Y);
                         dungeon.GetTile(enemyPair.Value.X, enemyPair.Value.Y).IsEnemy = false;
+                        dungeon.GetTile(enemyPair.Value.X, enemyPair.Value.Y).IsFree = true;
                         eindex.Add(enemyPair.Key);
                         this.messageHandler.KillMessage(this.character, enemyPair.Value);
                         this.GiveEnemyRewards(enemyPair.Value);
@@ -117,23 +128,24 @@
             }
 
             Console.Clear();
+            Utility.DeleteCharacter(this.character.Id);
             GameOver();
         }
 
         private void GiveEnemyRewards(Enemy enemy)
         {
+            this.character.Money += enemy.Money;
             this.character.Exp += enemy.ExpReward;
-            int x = this.character.X;
-            int y = this.character.Y;
             while (this.character.Exp >= Utility.GetExpToNextLevel(this.character.Id))
             {
                 int additionalExp = this.character.Exp - Utility.GetExpToNextLevel(this.character.Id);
-                Utility.IncreaseCharacterLevel(character.Id, additionalExp);
-                this.character = Utility.GetCharacterByName(character.Name);
-                this.character.X = x;
-                this.character.Y = y;
+                this.character.LevelId++;
+                this.character.Exp = additionalExp;
+                this.character.Points = Utility.GetPointsToReceive(this.character.Id);
+                Utility.SaveCharacter(this.character);
             }
 
+            Utility.SaveCharacter(this.character);
             this.statusHandler.Draw(character, dungeonLevel);
         }
 
@@ -160,18 +172,17 @@
         {
             Console.Clear();
             this.dungeonLevel++;
+            this.character.DungeonLevel++;
+            Utility.SaveCharacter(this.character);
             this.dungeon = new Dungeon(DungeonX, DungeonY);
-            this.dungeon.Generate(dungeonLevel + DungeonSize);
+            this.dungeon.Generate(dungeonLevel + DungeonSize, dungeonLevel);
             while (this.dungeon.Rooms.Count == 0)
             {
                 this.dungeon = new Dungeon(DungeonX, DungeonY);
-                this.dungeon.Generate(dungeonLevel + DungeonSize);
+                this.dungeon.Generate(dungeonLevel + DungeonSize, dungeonLevel);
             }
 
             this.dungeon.PlacePlayer(this.character);
-            // this rat is for testing
-            var rat = new Rat();
-            this.dungeon.PlaceEnemy(rat);
             this.statusHandler.Draw(this.character, dungeonLevel);
         }
 

@@ -2,25 +2,25 @@
 {
     using System;
 
-    public class Rat : Enemy
+    public class Bat : Enemy
     {
-        public const int DefaultHp = 50;
+        public const int DefaultHp = 75;
         public const int DefaultMp = 0;
-        public const int DefaultAttack = 15;
+        public const int DefaultAttack = 25;
         public const int DefaultMagicAttack = 0;
         public const int DefaultDefense = 5;
         public const int DefaultMagicDefense = 0;
-        public const int DefaultEvade = 10;
-        public const int DefaultAccuracy = 80;
+        public const int DefaultEvade = 30;
+        public const int DefaultAccuracy = 75;
         public const int DefaultRange = 1;
-        public const int DefaultExpReward = 35;
-        public const int DefaultMoneyReward = 3;
-        public const char DefaultSymbol = 'r';
-        public const string DefaultName = "Rat";
+        public const int DefaultExpReward = 60;
+        public const int DefaultMoneyReward = 5;
+        public const char DefaultSymbol = 'b';
+        public const string DefaultName = "Bat";
         public const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;
         public const ConsoleColor DefaultForegroundColor = ConsoleColor.Magenta;
 
-        public Rat()
+        public Bat()
             : base()
         {
             this.MaxHp = DefaultHp;
@@ -42,7 +42,7 @@
             this.ForegroundColor = DefaultForegroundColor;
         }
 
-        public Rat(int level = 1)
+        public Bat(int level = 1)
             : base()
         {
             this.Level = level;

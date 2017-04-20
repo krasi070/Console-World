@@ -2,14 +2,28 @@
 {
     using Models;
     using Models.Classes;
+    using Models.Enemies;
     using Models.Enums;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Data.Entity.Validation;
+    using System.Text;
 
     public class ConsoleWorldInitializer : DropCreateDatabaseAlways<ConsoleWorldContext>
     {
         protected override void Seed(ConsoleWorldContext context)
         {
+            var enemies = new List<Enemy>()
+            {
+                new Rat(),
+                new Bat(),
+                new Zombie(),
+                new Cyclops(),
+                new Goblin()
+            };
+
+            context.Enemies.AddRange(enemies);
+
             var items = new List<Item>()
             {
                 new Item("Health Potion (S)", 10, 25, ItemType.Hp),
@@ -66,7 +80,7 @@
             };
 
             context.Levels.AddRange(levels);
-            context.SaveChanges();
+            this.SaveChanges(context);
 
             Character archer = new Thief()
             {
@@ -74,12 +88,43 @@
             };
 
             context.Characters.Add(archer);
-            context.SaveChanges();
+            this.SaveChanges(context);
 
             context.CharacterItems.Add(new CharacterItem(1, 27, 1)); // 27 - Master Key
-            context.SaveChanges();
+            this.SaveChanges(context);
 
             base.Seed(context);
+        }
+
+        /// <summary>
+        /// Wrapper for SaveChanges adding the Validation Messages to the generated exception
+        /// </summary>
+        /// <param name="context">The context.</param>
+        private void SaveChanges(ConsoleWorldContext context)
+        {
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbEntityValidationException ex)
+            {
+                StringBuilder sb = new StringBuilder();
+
+                foreach (var failure in ex.EntityValidationErrors)
+                {
+                    sb.AppendFormat("{0} failed validation\n", failure.Entry.Entity.GetType());
+                    foreach (var error in failure.ValidationErrors)
+                    {
+                        sb.AppendFormat("- {0} : {1}", error.PropertyName, error.ErrorMessage);
+                        sb.AppendLine();
+                    }
+                }
+
+                throw new DbEntityValidationException(
+                    "Entity Validation Failed - errors follow:\n" +
+                    sb.ToString(), ex
+                ); // Add the original exception as the innerException
+            }
         }
     }
 }

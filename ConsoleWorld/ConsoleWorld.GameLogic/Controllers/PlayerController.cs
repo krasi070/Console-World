@@ -17,7 +17,10 @@
         private Random random = new Random();
         private MessageHandler messageHandler = new MessageHandler();
 
-        public bool Action(ScreenHandler screenHandler,Dungeon dungeon, Character character, ConsoleKey key)
+        // 0 - nothing
+        // 1 - update status
+        // 2 - next dungeon
+        public int Action(ScreenHandler screenHandler,Dungeon dungeon, Character character, ConsoleKey key)
         {
             switch (key)
             {
@@ -29,19 +32,21 @@
                 case ConsoleKey.RightArrow:
                 case ConsoleKey.A:
                 case ConsoleKey.LeftArrow:
-                    return MovePlayer(dungeon, character, key);
+                    return MovePlayer(dungeon, character, key) ? 1 : 0;
                 case ConsoleKey.O:
                     screenHandler.SelectOptionFromImproveStatsScreen(dungeon,character);
-                    return true;
+                    return 1;
                 case ConsoleKey.K:
                     this.ExecuteAttack(character, dungeon);
-                    return true;
+                    return 1;
                 case ConsoleKey.L:
                     this.GiveMoneyToMagicWell(dungeon, character);
-                    return true;
+                    return 1;
+                case ConsoleKey.J:
+                    return 2;
             }
 
-            return false;
+            return 0;
         }
 
         // returns true if status needs to be updated
@@ -69,11 +74,13 @@
                         if (Utility.CheckIfCharacterHasItem(character.Id, "Master Key"))
                         {
                             this.UnlockDoor(dungeon, character.X, character.Y - 1);
+                            this.messageHandler.UnlockDoorMasterKeyMessage(character);
                         }
                         else if (Utility.CheckIfCharacterHasItem(character.Id, "Normal Key"))
                         {
                             this.UseItem(character.Id, "Normal Key");
                             this.UnlockDoor(dungeon, character.X, character.Y - 1);
+                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 28));
                         }
                     }
 
@@ -97,11 +104,13 @@
                         if (Utility.CheckIfCharacterHasItem(character.Id, "Master Key"))
                         {
                             this.UnlockDoor(dungeon, character.X, character.Y + 1);
+                            this.messageHandler.UnlockDoorMasterKeyMessage(character);
                         }
                         else if (Utility.CheckIfCharacterHasItem(character.Id, "Normal Key"))
                         {
                             this.UseItem(character.Id, "Normal Key");
                             this.UnlockDoor(dungeon, character.X, character.Y + 1);
+                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 28));
                         }
                     }
 
@@ -125,11 +134,13 @@
                         if (Utility.CheckIfCharacterHasItem(character.Id, "Master Key"))
                         {
                             this.UnlockDoor(dungeon, character.X + 1, character.Y);
+                            this.messageHandler.UnlockDoorMasterKeyMessage(character);
                         }
                         else if (Utility.CheckIfCharacterHasItem(character.Id, "Normal Key"))
                         {
                             this.UseItem(character.Id, "Normal Key");
                             this.UnlockDoor(dungeon, character.X + 1, character.Y);
+                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 28));
                         }
                     }
 
@@ -153,11 +164,13 @@
                         if (Utility.CheckIfCharacterHasItem(character.Id, "Master Key"))
                         {
                             this.UnlockDoor(dungeon, character.X - 1, character.Y);
+                            this.messageHandler.UnlockDoorMasterKeyMessage(character);
                         }
                         else if (Utility.CheckIfCharacterHasItem(character.Id, "Normal Key"))
                         {
                             this.UseItem(character.Id, "Normal Key");
                             this.UnlockDoor(dungeon, character.X - 1, character.Y);
+                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 28));
                         }
                     }
                     break;
@@ -240,9 +253,8 @@
         {
             switch (tile.Type)
             {
-                case TileType.UpStairs:
-                    break;
-                case TileType.DownStairs:
+                case TileType.Hole:
+                    this.messageHandler.HoleMessage();
                     break;
                 case TileType.MagicWell:
                     this.messageHandler.MagicWellTutorialMessage(character);

@@ -52,8 +52,9 @@
 
         private List<Rectangle> Exits { get; set; }
 
-        public void Generate(int maxFeatures)
+        public void Generate(int maxFeatures, int maxEnemyLevel)
         {
+            int numberOfEnemies = maxFeatures / 2;
             this.maxItemSpawns = maxFeatures;
             this.maxMoneySpawns = maxFeatures;
 
@@ -72,11 +73,7 @@
                 }
             }
 
-            while (!this.PlaceObject(TileType.UpStairs))
-            {
-            }
-
-            while (!this.PlaceObject(TileType.DownStairs))
+            while (!this.PlaceObject(TileType.Hole))
             {
             }
 
@@ -102,6 +99,17 @@
                 {
                 }
             }
+
+            var enemies = Utility.GetEnemies();
+            for (int i = 0; i < numberOfEnemies; i++)
+            {
+                int index = random.Next(enemies.Count);
+                int level = random.Next(1, maxEnemyLevel + 1);
+                var enemy = enemies[index];
+                enemy.Level = level;
+                enemy.IncreaseStatsForLevel();
+                this.PlaceEnemy(enemy);
+            }
         }
 
         public void Draw()
@@ -123,9 +131,17 @@
                 Console.SetCursorPosition(x, y);
                 if (tile.IsEnemy)
                 {
-                    var enemy = this.Enemies.Values.FirstOrDefault(e => e.X == x && e.Y == y);                   
-                    enemy.IsVisible = true;
-                    enemy.Draw();
+                    if (this.Enemies.ContainsKey(x + y * this.Width))
+                    {
+                        this.Enemies[x + y * this.Width].IsVisible = true;
+                        this.Enemies[x + y * this.Width].Draw();
+                    }
+                    else
+                    {
+                        tile.IsEnemy = false;
+                        tile.IsFree = true;
+                        this.DrawTile(x, y);
+                    }                   
                 }
                 else
                 {
@@ -182,7 +198,7 @@
             int y = random.Next(this.Rooms[index].Y + 1, this.Rooms[index].Y + this.Rooms[index].Height - 2);
 
             Tile tile = this.GetTile(x, y);
-            if (tile.Type == TileType.Floor)
+            if (tile.IsFree)
             {
                 enemy.X = x;
                 enemy.Y = y;

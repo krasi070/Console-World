@@ -54,12 +54,18 @@
                     if (tile.IsFree && !tile.IsPlayer)
                     {
                         dungeon.GetTile(enemy.X, enemy.Y).IsEnemy = false;
+                        dungeon.GetTile(enemy.X, enemy.Y).IsFree = true;
                         dungeon.DrawTile(enemy.X, enemy.Y);
                         enemy.Y--;
                         tile.IsEnemy = true;
+                        tile.IsFree = false;
                         if (tile.IsVisibe)
                         {
                             enemy.Draw();
+                        }
+                        else
+                        {
+                            enemy.IsVisible = false;
                         }
                     }                   
                     break;
@@ -68,12 +74,18 @@
                     if (tile.IsFree && !tile.IsPlayer)
                     {
                         dungeon.GetTile(enemy.X, enemy.Y).IsEnemy = false;
+                        dungeon.GetTile(enemy.X, enemy.Y).IsFree = true;
                         dungeon.DrawTile(enemy.X, enemy.Y);
                         enemy.Y++;
                         tile.IsEnemy = true;
+                        tile.IsFree = false;
                         if (tile.IsVisibe)
                         {
                             enemy.Draw();
+                        }
+                        else
+                        {
+                            enemy.IsVisible = false;
                         }
                     }
                     break;
@@ -82,12 +94,18 @@
                     if (tile.IsFree && !tile.IsPlayer)
                     {
                         dungeon.GetTile(enemy.X, enemy.Y).IsEnemy = false;
+                        dungeon.GetTile(enemy.X, enemy.Y).IsFree = true;
                         dungeon.DrawTile(enemy.X, enemy.Y);
                         enemy.X++;
                         tile.IsEnemy = true;
+                        tile.IsFree = false;
                         if (tile.IsVisibe)
                         {
                             enemy.Draw();
+                        }
+                        else
+                        {
+                            enemy.IsVisible = false;
                         }
                     }
                     break;
@@ -96,12 +114,18 @@
                     if (tile.IsFree && !tile.IsPlayer)
                     {
                         dungeon.GetTile(enemy.X, enemy.Y).IsEnemy = false;
+                        dungeon.GetTile(enemy.X, enemy.Y).IsFree = true;
                         dungeon.DrawTile(enemy.X, enemy.Y);
                         enemy.X--;
                         tile.IsEnemy = true;
+                        tile.IsFree = false;
                         if (tile.IsVisibe)
                         {
                             enemy.Draw();
+                        }
+                        else
+                        {
+                            enemy.IsVisible = false;
                         }
                     }
                     break;

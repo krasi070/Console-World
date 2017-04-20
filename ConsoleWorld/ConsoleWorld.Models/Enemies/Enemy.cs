@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public class Enemy : Unit
     {
@@ -10,13 +11,15 @@
             this.IsVisible = false;
         }
 
+        public int Id { get; set; }
+
         public int ExpReward { get; set; }
 
+        [NotMapped]
         public int Level { get; set; }
 
+        [NotMapped]
         public bool IsVisible { get; set; }
-
-        public virtual ICollection<Item> Items { get; set; }
 
         public override void Draw()
         {
@@ -26,7 +29,7 @@
             }
         }
 
-        protected virtual void IncreaseStatsForLevel()
+        public virtual void IncreaseStatsForLevel()
         {
             Random random = new Random();
             int pointsToGive = (this.Level - 1) * 2;

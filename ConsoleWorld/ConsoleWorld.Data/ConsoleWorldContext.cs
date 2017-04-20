@@ -2,13 +2,14 @@ namespace ConsoleWorld.Data
 {
     using System.Data.Entity;
     using Models;
+    using Models.Enemies;
 
     public class ConsoleWorldContext : DbContext
     {
         public ConsoleWorldContext()
             : base("name=ConsoleWorldContext")
         {
-            Database.SetInitializer(new ConsoleWorldInitializer());
+            //Database.SetInitializer(new ConsoleWorldInitializer());
         }
 
         public virtual DbSet<Character> Characters { get; set; }
@@ -19,7 +20,7 @@ namespace ConsoleWorld.Data
 
         public virtual DbSet<Level> Levels { get; set; }
 
-        public virtual DbSet<Quest> Quests { get; set; }
+        public virtual DbSet<Enemy> Enemies { get; set; }
 
         public virtual DbSet<CharacterItem> CharacterItems { get; set; }
 

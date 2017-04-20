@@ -6,6 +6,7 @@
     using System.Collections.Generic;
     using Models.Enums;
     using Models.Classes;
+    using Models.Enemies;
 
     public static class Utility
     {
@@ -157,6 +158,17 @@
             return items;
         }
 
+        public static List<Item> GetCharactersItems(int characterId)
+        {
+            List<Item> items = new List<Item>();
+            using (var context = new ConsoleWorldContext())
+            {
+
+            }
+
+            return items;
+        }
+
         public static void AddItemToCharacter(int characterId, int itemId)
         {
             using (var context = new ConsoleWorldContext())
@@ -211,6 +223,21 @@
             return exp;
         }
 
+        public static int GetPointsToReceive(int characterId)
+        {
+            int points = 0;
+            using (var context = new ConsoleWorldContext())
+            {
+                var character = context.Characters.FirstOrDefault(c => c.Id == characterId);
+                if (character != null)
+                {
+                    points = character.Level.PointsToReceive;
+                }
+            }
+
+            return points;
+        }
+
         public static List<Item> GetItemsForMagicWell(int money)
         {
             List<Item> items = new List<Item>();
@@ -235,13 +262,13 @@
             return items;
         }
 
-        public static Weapon GetWeaponForMagicWell(int money)
+        public static Weapon GetWeaponForMagicWell(Character character, int money)
         {
             Weapon weapon = null;
             using (var context = new ConsoleWorldContext())
             {
                 var weapons = context.Weapons
-                    .Where(w => w.Price < money)
+                    .Where(w => w.Price < money && w.RequiredLevel <= character.LevelId)
                     .ToList();
                 if (weapons.Count > 0)
                 {
@@ -250,6 +277,72 @@
             }
 
             return weapon;
+        }
+
+        public static void SaveCharacter(Character character)
+        {
+            using (var context = new ConsoleWorldContext())
+            {
+                var characterInDb = context.Characters.FirstOrDefault(c => c.Id == character.Id);
+                if (characterInDb != null)
+                {
+                    characterInDb.Class = character.Class;
+                    characterInDb.MaxHp = character.MaxHp;
+                    characterInDb.Hp = character.Hp;
+                    characterInDb.MaxMp = character.MaxMp;
+                    characterInDb.Mp = character.Mp;
+                    characterInDb.Attack = character.Attack;
+                    characterInDb.MagicAttack = character.MagicAttack;
+                    characterInDb.Defense = character.Defense;
+                    characterInDb.MagicDefense = character.MagicDefense;
+                    characterInDb.Evade = character.Evade;
+                    characterInDb.Accuracy = character.Accuracy;
+                    characterInDb.EquippedWeaponId = character.EquippedWeaponId;
+                    characterInDb.Exp = character.Exp;
+                    characterInDb.Points = character.Points;
+                    characterInDb.LevelId = character.LevelId;
+                    characterInDb.Money = character.Money;
+                    characterInDb.DungeonLevel = character.DungeonLevel;
+
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public static List<Enemy> GetEnemies()
+        {
+            var enemies = new List<Enemy>();
+            using (var context = new ConsoleWorldContext())
+            {
+                enemies.AddRange(context.Enemies.ToList());
+            }
+
+            return enemies;
+        }
+
+        public static void DeleteCharacter(int characterId)
+        {
+            using (var context = new ConsoleWorldContext())
+            {
+                context.CharacterItems.RemoveRange(context.CharacterItems.Where(ci => ci.CharacterId == characterId));
+                context.Characters.Remove(context.Characters.FirstOrDefault(c => c.Id == characterId));
+                context.SaveChanges();
+            }
+        }
+
+        public static int GetItemQuantity(int characterId, int itemId)
+        {
+            int quantity = 0;
+            using (var context = new ConsoleWorldContext())
+            {
+                var characterItem = context.CharacterItems.FirstOrDefault(ci => ci.CharacterId == characterId && ci.ItemId == itemId);
+                if (characterItem != null)
+                {
+                    quantity += characterItem.Quantity;
+                }
+            }
+
+            return quantity;
         }
     }
 }

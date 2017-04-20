@@ -2,25 +2,25 @@
 {
     using System;
 
-    public class Rat : Enemy
+    public class Cyclops : Enemy
     {
-        public const int DefaultHp = 50;
-        public const int DefaultMp = 0;
-        public const int DefaultAttack = 15;
-        public const int DefaultMagicAttack = 0;
-        public const int DefaultDefense = 5;
-        public const int DefaultMagicDefense = 0;
-        public const int DefaultEvade = 10;
+        public const int DefaultHp = 150;
+        public const int DefaultMp = 30;
+        public const int DefaultAttack = 25;
+        public const int DefaultMagicAttack = 30;
+        public const int DefaultDefense = 20;
+        public const int DefaultMagicDefense = 10;
+        public const int DefaultEvade = 0;
         public const int DefaultAccuracy = 80;
         public const int DefaultRange = 1;
-        public const int DefaultExpReward = 35;
-        public const int DefaultMoneyReward = 3;
-        public const char DefaultSymbol = 'r';
-        public const string DefaultName = "Rat";
+        public const int DefaultExpReward = 200;
+        public const int DefaultMoneyReward = 11;
+        public const char DefaultSymbol = 'c';
+        public const string DefaultName = "Cyclops";
         public const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;
-        public const ConsoleColor DefaultForegroundColor = ConsoleColor.Magenta;
+        public const ConsoleColor DefaultForegroundColor = ConsoleColor.DarkYellow;
 
-        public Rat()
+        public Cyclops()
             : base()
         {
             this.MaxHp = DefaultHp;
@@ -42,7 +42,7 @@
             this.ForegroundColor = DefaultForegroundColor;
         }
 
-        public Rat(int level = 1)
+        public Cyclops(int level = 1)
             : base()
         {
             this.Level = level;

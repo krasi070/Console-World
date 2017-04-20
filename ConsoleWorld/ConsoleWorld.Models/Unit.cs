@@ -16,13 +16,10 @@
         [NotMapped]
         public int Y { get; set; }
 
-        [NotMapped]
         public char Symbol { get; set; }
 
-        [NotMapped]
         public ConsoleColor ForegroundColor { get; set; }
 
-        [NotMapped]
         public ConsoleColor BackgroundColor { get; set; } 
 
         [Required]
@@ -103,6 +100,8 @@
                 return this.Hp > 0;
             }
         }
+
+        public int? EquippedWeaponId { get; set; }
 
         public virtual Weapon EquippedWeapon { get; set; }
 

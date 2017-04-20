@@ -16,50 +16,22 @@
         private const int QuantityY = 10;
         private const int SelectLength = 3;
         private static string currItem = "";
+
         public static Character currentCharacter { get; set; }
+
         public static void ListItems()
         {
-            //List<CharacterItem> items = Utility.GetItems(currentCharacter.Id);
-            CharacterItem i1 = new CharacterItem()
-            {
-                CharacterId = 1,
-                ItemId = 5,
-                Quantity = 1
-            };
-            CharacterItem i2 = new CharacterItem()
-            {
-                CharacterId = 2,
-                ItemId = 4
-            };
-
-            List<CharacterItem> items = new List<CharacterItem>();
-            CharacterItem i3 = new CharacterItem()
-            {
-                CharacterId = 2,
-                ItemId = 4,
-
-            };
-            CharacterItem i4 = new CharacterItem()
-            {
-                CharacterId = 2,
-                ItemId = 4,
-
-            };
-            items.Add(i2);
-            items.Add(i1);
-            items.Add(i4);
-            items.Add(i3);
-            Console.SetCursorPosition(20, 5);
-            Console.WriteLine("Select an item you'd like to use. Click enter to use the item.");
-            int i = 0;            
-            foreach (var item in items)
-            {
-                Console.SetCursorPosition(OptionsX, OptionsY+i);
-                Console.WriteLine(' ' + item.ItemId.ToString() + ' ');
-                i++;
-            }
-            currItem = items.ElementAt(0).ItemId.ToString();
-            Highlight(0,items);
+            //Console.SetCursorPosition(20, 5);
+            //Console.WriteLine("Select an item you'd like to use. Click enter to use the item.");
+            //int i = 0;            
+            //foreach (var item in items)
+            //{
+            //    Console.SetCursorPosition(OptionsX, OptionsY+i);
+            //    Console.WriteLine(' ' + item.ItemId.ToString() + ' ');
+            //    i++;
+            //}
+            //currItem = items.ElementAt(0).ItemId.ToString();
+            //Highlight(0,items);
         }
 
         public static void SelectOption()

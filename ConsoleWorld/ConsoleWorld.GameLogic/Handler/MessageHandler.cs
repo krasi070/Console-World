@@ -32,7 +32,12 @@
 
         public void KillMessage(Unit killer, Unit killed)
         {
-            this.WriteMessage($"{killer.Name} killed {killed.Name}!");
+            this.WriteMessage($"{killer.Name} killed {killed.Name} and got {killed.Money}$!");
+        }
+
+        public void HoleMessage()
+        {
+            this.WriteMessage("Drop down? (Press [J])");
         }
 
         public void MagicWellMessage(Character character, List<Item> items)
@@ -50,6 +55,16 @@
         public void MagicWellTutorialMessage(Character character)
         {
             this.WriteMessage($"Will {character.Name} give all of his money to the magic well? (Press [L])");
+        }
+
+        public void UnlockDoorNormalKeyMessage(Character character, int keysLeft)
+        {
+            this.WriteMessage($"{character.Name} unlocked a door! ({keysLeft} keys left)");
+        }
+
+        public void UnlockDoorMasterKeyMessage(Character character)
+        {
+            this.WriteMessage($"{character.Name} unlocked a door with the Master Key!");
         }
 
         public void EraseMessage()
