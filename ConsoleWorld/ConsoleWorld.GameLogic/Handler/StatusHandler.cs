@@ -11,7 +11,7 @@
 
         public void Draw(Character character, int dungeonLevel)
         {
-
+            this.EraseStatus();
             Console.SetCursorPosition(StartX, StartY);
             Console.Write($"Name: {character.Name} the {character.Class.ToString()} " + 
                 $"LVL: {character.LevelId}  " +
@@ -33,6 +33,16 @@
                 $"EV: {character.Evade}%  " +
                 $"ACC: {character.Accuracy}%  " +
                 $"RANGE: {character.Range}");
+        }
+
+        private void EraseStatus()
+        {
+            Console.SetCursorPosition(StartX, StartY);
+            Console.Write(new string(' ', 100));
+            Console.SetCursorPosition(StartX, StartY + 1);
+            Console.Write(new string(' ', 100));
+            Console.SetCursorPosition(StartX, StartY + 2);
+            Console.Write(new string(' ', 100));
         }
     }
 }

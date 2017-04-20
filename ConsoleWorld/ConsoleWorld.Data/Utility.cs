@@ -4,13 +4,61 @@
     using System;
     using System.Linq;
     using System.Collections.Generic;
+    using Models.Enums;
+    using Models.Classes;
 
     public static class Utility
     {
+        private const int MaxAmountOfItemsFromMagicWell = 3;
+
+        private static Random random = new Random();
+
         public static void InitDb()
         {
             var context = new ConsoleWorldContext();
             context.Database.Initialize(true);
+        }
+
+        public static Character CreateNewCharacter(Class characterClass, string name)
+        {
+            var character = new Character();
+            using (var context = new ConsoleWorldContext())
+            {
+                if (characterClass.ToString() == "Archer")
+                {
+                    character = new Archer();
+                }
+                else if (characterClass.ToString() == "Knight")
+                {
+                    character = new Knight();
+                }
+                else if (characterClass.ToString() == "Magician")
+                {
+                    character = new Magician();
+                }
+                else if (characterClass.ToString() == "Robot")
+                {
+                    character = new Robot();
+                }
+                else if (characterClass.ToString() == "Thief")
+                {
+                    character = new Thief();
+                }
+                else if (characterClass.ToString() == "Viking")
+                {
+                    character = new Viking();
+                }
+
+                character.Name = name;
+                context.Characters.Add(character);
+                context.SaveChanges();
+
+                var id = context.Characters.FirstOrDefault(c => c.Name == name).Id;
+                context.CharacterItems.Add(new CharacterItem(id, 28, 10)); // 28 - normal key
+                context.SaveChanges();
+            }
+
+            return character;
         }
 
         public static bool CheckIfCharacterExists(string name)
@@ -161,6 +209,47 @@
             }
 
             return exp;
+        }
+
+        public static List<Item> GetItemsForMagicWell(int money)
+        {
+            List<Item> items = new List<Item>();
+            using (var context = new ConsoleWorldContext())
+            {
+                var candidateItems = context.Items
+                    .Where(i => i.Price < money)
+                    .ToList();
+                int count = 0;
+                while (money > 0 && candidateItems.Count > 0 && count < MaxAmountOfItemsFromMagicWell)
+                {
+                    var item = candidateItems[random.Next(candidateItems.Count)];
+                    money -= item.Price;
+                    items.Add(item);
+                    candidateItems = context.Items
+                    .Where(i => i.Price < money)
+                    .ToList();
+                    count++;
+                }
+            }
+
+            return items;
+        }
+
+        public static Weapon GetWeaponForMagicWell(int money)
+        {
+            Weapon weapon = null;
+            using (var context = new ConsoleWorldContext())
+            {
+                var weapons = context.Weapons
+                    .Where(w => w.Price < money)
+                    .ToList();
+                if (weapons.Count > 0)
+                {
+                    weapon = weapons[random.Next(weapons.Count)];
+                }
+            }
+
+            return weapon;
         }
     }
 }

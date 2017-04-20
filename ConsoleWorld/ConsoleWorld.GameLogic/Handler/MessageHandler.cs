@@ -2,6 +2,8 @@
 {
     using Models;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class MessageHandler
     {
@@ -31,6 +33,23 @@
         public void KillMessage(Unit killer, Unit killed)
         {
             this.WriteMessage($"{killer.Name} killed {killed.Name}!");
+        }
+
+        public void MagicWellMessage(Character character, List<Item> items)
+        {
+            if (items.Count > 0)
+            {
+                this.WriteMessage($"{character.Name} got {string.Join(", ", items.Select(i => i.Name))} from the magic well!");
+            }
+            else
+            {
+                this.WriteMessage($"{character.Name} didn't give enough money to the magic well!");
+            }
+        }
+
+        public void MagicWellTutorialMessage(Character character)
+        {
+            this.WriteMessage($"Will {character.Name} give all of his money to the magic well? (Press [L])");
         }
 
         public void EraseMessage()

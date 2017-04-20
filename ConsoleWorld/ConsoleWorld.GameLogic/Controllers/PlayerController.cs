@@ -36,8 +36,9 @@
                 case ConsoleKey.K:
                     this.ExecuteAttack(character, dungeon);
                     return true;
-                //case ConsoleKey.L:
-
+                case ConsoleKey.L:
+                    this.GiveMoneyToMagicWell(dungeon, character);
+                    return true;
             }
 
             return false;
@@ -188,6 +189,10 @@
                         Thread.Sleep(50);
                         dungeon.Enemies[x + y * dungeon.Width].Draw();
                     }
+                    else
+                    {
+                        this.messageHandler.MissMessage(character);
+                    }
                 }
 
                 if (currRange < character.Range)
@@ -240,6 +245,7 @@
                 case TileType.DownStairs:
                     break;
                 case TileType.MagicWell:
+                    this.messageHandler.MagicWellTutorialMessage(character);
                     break;
                 case TileType.Money:
                     this.PickUpMoney(dungeon, character);
@@ -266,6 +272,22 @@
             this.messageHandler.ItemMessage(character, dungeon.Items[character.X + character.Y * dungeon.Width]);
             dungeon.Items.Remove(character.X + character.Y * dungeon.Width);
             dungeon.SetTile(character.X, character.Y, new Tile(TileType.Floor));
+        }
+
+        private void GiveMoneyToMagicWell(Dungeon dungeon, Character character)
+        {
+            if (dungeon.GetTile(character.X, character.Y).Type == TileType.MagicWell)
+            {
+                int money = character.Money;
+                character.Money = 0;
+                var items = Utility.GetItemsForMagicWell(money);
+                foreach (var item in items)
+                {
+                    Utility.AddItemToCharacter(character.Id, item.Id);
+                }
+
+                this.messageHandler.MagicWellMessage(character, items);
+            }
         }
     }
 }

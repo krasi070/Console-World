@@ -29,16 +29,6 @@ namespace ConsoleWorld.Data
                 .HasOptional(c => c.EquippedWeapon)
                 .WithMany(w => w.CharactersEquippedWeapon);
 
-            modelBuilder.Entity<Weapon>()
-                .HasMany(w => w.CharactersOwningWeapon)
-                .WithMany(c => c.Weapons)
-                .Map(cs =>
-                {
-                    cs.ToTable("CharacterWeapons");
-                    cs.MapLeftKey("Weapon_Id");
-                    cs.MapRightKey("Character_Id");
-                });
-
             modelBuilder.Entity<CharacterItem>()
                 .HasKey(ci => new
                 {

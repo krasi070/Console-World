@@ -46,6 +46,7 @@
                     this.character = this.screenHandler.SelectOptionFromStartMenuScreen();
                     if (this.character != null)
                     {
+                        this.character.Money = 10;
                         Console.Clear();
                         
                         this.GameLoop();
@@ -128,11 +129,11 @@
             {
                 int additionalExp = this.character.Exp - Utility.GetExpToNextLevel(this.character.Id);
                 Utility.IncreaseCharacterLevel(character.Id, additionalExp);
+                this.character = Utility.GetCharacterByName(character.Name);
+                this.character.X = x;
+                this.character.Y = y;
             }
 
-            this.character = Utility.GetCharacterByName(character.Name);
-            this.character.X = x;
-            this.character.Y = y;
             this.statusHandler.Draw(character, dungeonLevel);
         }
 

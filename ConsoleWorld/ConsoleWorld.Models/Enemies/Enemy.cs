@@ -75,7 +75,10 @@
                 }
             }
 
-            this.ExpReward += (int)(this.ExpReward * this.Level * 0.5);
+            if (this.Level > 1)
+            {
+                this.ExpReward += (int)(this.ExpReward * this.Level * 0.5);
+            }
         }
     }
 }

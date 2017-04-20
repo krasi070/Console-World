@@ -68,43 +68,7 @@
                 key = Console.ReadKey(true).Key;
             }
 
-            return CreateCharacterDb();
-        }
-
-        private static Character CreateCharacterDb()
-        {
-            var character = new Character();
-            var ctx = new ConsoleWorldContext();
-            if (characterClass.ToString() == "Archer")
-            {
-                character = new Archer();
-            }
-            else if (characterClass.ToString() == "Knight")
-            {
-                character = new Knight();
-            }
-            else if (characterClass.ToString() == "Magician")
-            {
-                character = new Magician();
-            }
-            else if (characterClass.ToString() == "Robot")
-            {
-                character = new Robot();
-            }
-            else if (characterClass.ToString() == "Thief")
-            {
-                character = new Thief();
-            }
-            else if (characterClass.ToString() == "Viking")
-            {
-                character = new Viking();
-            }
-
-            character.Name = characterName;
-            ctx.Characters.Add(character);
-            ctx.SaveChanges();
-
-            return character;
+            return Utility.CreateNewCharacter(characterClass, characterName);
         }
 
         private static void NameCharacter()

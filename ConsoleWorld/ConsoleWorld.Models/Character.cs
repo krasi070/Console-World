@@ -10,7 +10,6 @@
         public Character() 
             : base()
         {
-            this.Weapons = new HashSet<Weapon>();
             this.Symbol = '@';
             this.BackgroundColor = ConsoleColor.Black;
             this.ForegroundColor = ConsoleColor.White;
@@ -32,7 +31,5 @@
         public int Points { get; set; }
 
         public int? EquippedWeaponId { get; set; }
-
-        public virtual ICollection<Weapon> Weapons { get; set; }
     }
 }

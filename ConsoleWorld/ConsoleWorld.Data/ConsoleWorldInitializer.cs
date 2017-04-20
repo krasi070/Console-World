@@ -44,6 +44,18 @@
 
             context.Items.AddRange(items);
 
+            var weapons = new List<Weapon>()
+            {
+                new Weapon("Sword", 20, 0, 50, 2),
+                new Weapon("Wand", 1, 15, 60, 2),
+                new Weapon("Katana", 30, 5, 80, 3),
+                new Weapon("Stick", 5, 0, 15, 1),
+                new Weapon("Hammer", 30, 0, 60, 3),
+                new Weapon("Magic Bow", 10, 20, 80, 3)
+            };
+
+            context.Weapons.AddRange(weapons);
+
             var levels = new List<Level>()
             {
                 new Level(100, 1),
