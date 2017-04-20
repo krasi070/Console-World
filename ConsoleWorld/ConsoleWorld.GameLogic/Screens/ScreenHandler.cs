@@ -61,7 +61,13 @@ namespace ConsoleWorld.GameLogic.Screens
             if(ImproveStatsScreen.SelectOption(character))
             BackFromImproveStats(dungeon,character);
         }
+        public void SelectOptionFromItemScreen(Dungeon dungeon, Character character)
+        {
+            ItemsScreen.ListItems(character);
+            if(ItemsScreen.SelectOption(character))
+                BackFromImproveStats(dungeon, character);
 
+        }
         public void Back()
         {
             while (true)

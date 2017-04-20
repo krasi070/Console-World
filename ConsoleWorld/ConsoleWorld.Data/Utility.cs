@@ -55,7 +55,7 @@
                 context.SaveChanges();
 
                 var id = context.Characters.FirstOrDefault(c => c.Name == name).Id;
-                context.CharacterItems.Add(new CharacterItem(id, 28, 10)); // 28 - normal key
+                context.CharacterItems.Add(new CharacterItem(id, 10, 10)); // 28 - normal key
                 context.SaveChanges();
             }
 
@@ -136,14 +136,20 @@
             }
         }
 
-        public static List<CharacterItem> GetCharacterItems(int characterId)
+        public static Dictionary<string,int> GetCharacterItems(int characterId)
 
         {
             using (var context = new ConsoleWorldContext())
             {
                 List<CharacterItem> items = context.CharacterItems.Where(ci => ci.CharacterId == characterId).ToList();
 
-                return items;
+                Dictionary<string,int> dictionary= new Dictionary<string, int>();
+                foreach (var item in items)
+                {
+                    dictionary.Add(item.Item.Name,item.Quantity);
+                }
+                dictionary.Add("Back",-1);
+                return dictionary;
             }
         }
 
@@ -361,6 +367,17 @@
                     character.EquippedWeapon = weapon;
                 }
             }
+        }
+
+        public static Item GetItem(string name)
+        {
+            
+            using (var context = new ConsoleWorldContext())
+            {
+                var item = context.Items.FirstOrDefault(i => i.Name == name);
+                return item;
+            }
+            
         }
     }
 }

@@ -36,6 +36,9 @@
                 case ConsoleKey.O:
                     screenHandler.SelectOptionFromImproveStatsScreen(dungeon,character);
                     return 1;
+                case ConsoleKey.I:
+                    screenHandler.SelectOptionFromItemScreen(dungeon, character);
+                    return 1;
                 case ConsoleKey.K:
                     this.ExecuteAttack(character, dungeon);
                     return 1;
@@ -80,7 +83,7 @@
                         {
                             this.UseItem(character.Id, "Normal Key");
                             this.UnlockDoor(dungeon, character.X, character.Y - 1);
-                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 28));
+                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 10));
                         }
                     }
 
@@ -110,7 +113,7 @@
                         {
                             this.UseItem(character.Id, "Normal Key");
                             this.UnlockDoor(dungeon, character.X, character.Y + 1);
-                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 28));
+                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 10));
                         }
                     }
 
@@ -140,7 +143,7 @@
                         {
                             this.UseItem(character.Id, "Normal Key");
                             this.UnlockDoor(dungeon, character.X + 1, character.Y);
-                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 28));
+                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 10));
                         }
                     }
 
@@ -170,7 +173,7 @@
                         {
                             this.UseItem(character.Id, "Normal Key");
                             this.UnlockDoor(dungeon, character.X - 1, character.Y);
-                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 28));
+                            this.messageHandler.UnlockDoorNormalKeyMessage(character, Utility.GetItemQuantity(character.Id, 10));
                         }
                     }
                     break;
