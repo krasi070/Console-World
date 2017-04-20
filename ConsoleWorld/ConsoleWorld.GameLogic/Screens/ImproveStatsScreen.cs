@@ -1,4 +1,6 @@
-﻿namespace ConsoleWorld.GameLogic.Screens
+﻿using ConsoleWorld.GameLogic.Core;
+
+namespace ConsoleWorld.GameLogic.Screens
 {
     using System;
     using Enums;
@@ -29,17 +31,14 @@
         //    Name = "asdgfasd"
         //};
 
-        public static void CurrCharacter(Character ch)
-        {
-            CurrentClass = ch;
-        }
-        public static void Draw()
+       
+        public static void Draw(Character character)
         {
             Console.Clear();
             Console.SetCursorPosition(30, 2);
             Console.WriteLine("Using the points you've obtained you can improve your stats.");
 
-            HighlightOption(ImproveStatsOption.MaxHp);
+            HighlightOption(ImproveStatsOption.MaxHp,character);
             RemoveHighlight(ImproveStatsOption.MaxMp);
             RemoveHighlight(ImproveStatsOption.Attack);
             RemoveHighlight(ImproveStatsOption.MagicAttack);
@@ -50,7 +49,7 @@
             RemoveHighlight(ImproveStatsOption.Back);
         }
 
-        public static void SelectOption()
+        public static bool SelectOption(Character character)
         {
             ConsoleKey key = Console.ReadKey(true).Key;
             while (key != ConsoleKey.Escape)
@@ -62,7 +61,7 @@
                         {
                             RemoveHighlight(CurrentOption);
                             CurrentOption = (ImproveStatsOption)((int)(CurrentOption + 1) % NumberOfOptions);
-                            HighlightOption(CurrentOption);
+                            HighlightOption(CurrentOption,character);
                         }
                         break;
                     case ConsoleKey.UpArrow:
@@ -72,87 +71,88 @@
                             CurrentOption = CurrentOption - 1 < 0
                              ? ImproveStatsOption.Back
                             : (ImproveStatsOption)(CurrentOption - 1);
-                             HighlightOption(CurrentOption);
+                             HighlightOption(CurrentOption,character);
                         }
                         break;
                     case ConsoleKey.Enter:
                         {
                             var ctx = new ConsoleWorldContext();
-                            if (CurrentClass.Points <= 0)
+                            if (character.Points <= 0 && CurrentOption.ToString()!="Back")
                             {
                                 Console.SetCursorPosition(40, 5);
                                 Console.WriteLine("You don't have enough points for that!");
                                 key = Console.ReadKey(true).Key;
 
                                 continue;
-                            }                           
+                            }
                             switch (CurrentOption.ToString())
                             {
                                 case "MaxHp":
-                                    CurrentClass.MaxHp += 1;
-                                    CurrentClass.Points--;
-                                    DrawStats(CurrentClass, "MaxHp");
+                                    character.MaxHp += 1;
+                                    character.Points--;
+                                    DrawStats(character, "MaxHp");
                                     break;
                                 case "MaxMp":
-                                    CurrentClass.MaxMp += 1;
-                                    CurrentClass.Points--;
-                                    DrawStats(CurrentClass, "MaxMp");
+                                    character.MaxMp += 1;
+                                    character.Points--;
+                                    DrawStats(character, "MaxMp");
 
                                     break;
                                 case "Attack":
-                                    CurrentClass.Attack += 1;
-                                    CurrentClass.Points--;
-                                    DrawStats(CurrentClass, "Attack");
+                                    character.Attack += 1;
+                                    character.Points--;
+                                    DrawStats(character, "Attack");
 
                                     break;
                                 case "MagicAttack":
-                                    CurrentClass.MagicAttack += 1;
-                                    CurrentClass.Points--;
-                                    DrawStats(CurrentClass, "MagicAttack");
+                                    character.MagicAttack += 1;
+                                    character.Points--;
+                                    DrawStats(character, "MagicAttack");
 
                                     break;
                                 case "Defense":
-                                    CurrentClass.Defense += 1;
-                                    CurrentClass.Points--;
-                                    DrawStats(CurrentClass, "Defense");
+                                    character.Defense += 1;
+                                    character.Points--;
+                                    DrawStats(character, "Defense");
 
                                     break;
                                 case "MagicDefense":
-                                    CurrentClass.MagicDefense += 1;
-                                    CurrentClass.Points--;
-                                    DrawStats(CurrentClass, "MagicDefense");
+                                    character.MagicDefense += 1;
+                                    character.Points--;
+                                    DrawStats(character, "MagicDefense");
 
                                     break;
                                 case "Accuracy":
-                                    CurrentClass.Accuracy += 1;
-                                    CurrentClass.Points--;
-                                    DrawStats(CurrentClass, "Accuracy");
+                                    character.Accuracy += 1;
+                                    character.Points--;
+                                    DrawStats(character, "Accuracy");
 
                                     break;
                                 case "Evade":
-                                    CurrentClass.Evade += 1;
-                                    CurrentClass.Points--;
-                                    DrawStats(CurrentClass, "Evaded");
+                                    character.Evade += 1;
+                                    character.Points--;
+                                    DrawStats(character, "Evaded");
 
                                     break;
+                                case "Back":
+                                   
+                                    return true;
                             }
                             ctx.SaveChanges();
-
-                            if (CurrentOption == ImproveStatsOption.Back)
-                            {
-                                //TODO: Return to the game
-
-                            }
+                                                           
+                            
                         }
                         break;
+
                 }
                 Console.SetCursorPosition(40, 5);
                 Console.WriteLine(new string(' ', "You don't have enough points for that!".Length));
                 key = Console.ReadKey(true).Key;
             }
+            return false;
         }
 
-        private static void HighlightOption(ImproveStatsOption option)
+        private static void HighlightOption(ImproveStatsOption option,Character character)
         {
             if (option == ImproveStatsOption.MaxHp)
             {
@@ -162,7 +162,7 @@
                 Console.WriteLine(new string(' ', (SelectLength - "Max Health".Length) / 2) + "Max Health" + new string(' ', (SelectLength - "Max Health".Length) / 2 + (SelectLength - "Max Health".Length) % 2));
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                DrawStats(CurrentClass,"MaxHp");
+                DrawStats(character, "MaxHp");
             }
 
             if (option == ImproveStatsOption.MaxMp)
@@ -173,7 +173,7 @@
                 Console.WriteLine(new string(' ', (SelectLength - "Max Magic Power".Length) / 2) + "Max Magic Power" + new string(' ', (SelectLength - "Max Magic Power".Length) / 2 + (SelectLength - "Max Magic Power".Length) % 2));
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                DrawStats(CurrentClass, "MaxMp");
+                DrawStats(character, "MaxMp");
 
             }
 
@@ -185,7 +185,7 @@
                 Console.WriteLine(new string(' ', (SelectLength - "Attack".Length) / 2) + "Attack" + new string(' ', (SelectLength - "Attack".Length) / 2 + (SelectLength - "Attack".Length) % 2));
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                DrawStats(CurrentClass, "Attack");
+                DrawStats(character, "Attack");
 
             }
 
@@ -197,7 +197,7 @@
                 Console.WriteLine(new string(' ', (SelectLength - "Magic Attack".Length) / 2) + "Magic Attack" + new string(' ', (SelectLength - "Magic Attack".Length) / 2 + (SelectLength - "Magic Attack".Length) % 2));
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                DrawStats(CurrentClass, "MagicAttack");
+                DrawStats(character, "MagicAttack");
 
             }
             if (option == ImproveStatsOption.Defense)
@@ -208,7 +208,7 @@
                 Console.WriteLine(new string(' ', (SelectLength - "Defense".Length) / 2) + "Defense" + new string(' ', (SelectLength - "Defense".Length) / 2 + (SelectLength - "Defense".Length) % 2));
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                DrawStats(CurrentClass, "Defense");
+                DrawStats(character, "Defense");
 
             }
             if (option == ImproveStatsOption.MagicDefense)
@@ -219,7 +219,7 @@
                 Console.WriteLine(new string(' ', (SelectLength - "Magic Defense".Length) / 2) + "Magic Defense" + new string(' ', (SelectLength - "Magic Defense".Length) / 2 + (SelectLength - "Magic Defense".Length) % 2));
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                DrawStats(CurrentClass, "MagicDefense");
+                DrawStats(character, "MagicDefense");
 
             }
             if (option == ImproveStatsOption.Evade)
@@ -230,7 +230,7 @@
                 Console.WriteLine(new string(' ', (SelectLength - "Evade".Length) / 2) + "Evade" + new string(' ', (SelectLength - "Evade".Length) / 2 + (SelectLength - "Evade".Length) % 2));
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                DrawStats(CurrentClass, "Evade");
+                DrawStats(character, "Evade");
 
             }
             if (option == ImproveStatsOption.Accuracy)
@@ -241,7 +241,7 @@
                 Console.WriteLine(new string(' ', (SelectLength - "Accuracy".Length) / 2) + "Accuracy" + new string(' ', (SelectLength - "Accuracy".Length) / 2 + (SelectLength - "Accuracy".Length) % 2));
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.White;
-                DrawStats(CurrentClass, "Accuracy");
+                DrawStats(character, "Accuracy");
 
             }
             if (option == ImproveStatsOption.Back)
@@ -319,16 +319,20 @@
             // Console.WriteLine(stat);
             string className = ch.Class.ToString();
             Type type = Type.GetType($"ConsoleWorld.Models.Classes.{className},ConsoleWorld.Models");
-            string curr = type.GetProperty(stat).GetValue(ch).ToString();
+            string curr = type.GetProperty(stat).GetValue(ch).ToString();            
             Console.SetCursorPosition(StatsX, StatsY);
             Console.Write(new string(' ',40));
             Console.SetCursorPosition(StatsX, StatsY);
             Console.Write($"Current {stat}: {curr}");
+            PrintPoints(ch);
+            
         }
-        private static void PrintPoints()
+        private static void PrintPoints(Character character)
         {
             Console.SetCursorPosition(PointsX, PointsY);
-            Console.Write($"Your points: {CurrentClass.Points}");
+            Console.Write(new string(' ', 40));
+            Console.SetCursorPosition(PointsX, PointsY);
+            Console.Write($"Your points: {character.Points}");
         }
     }
 }

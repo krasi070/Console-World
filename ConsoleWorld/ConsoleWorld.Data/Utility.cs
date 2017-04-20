@@ -87,11 +87,14 @@
             }
         }
 
-        public static List<CharacterItem> GetCharacterItems()
+        public static List<CharacterItem> GetCharacterItems(int characterId)
+
         {
             using (var context = new ConsoleWorldContext())
             {
-                return context.CharacterItems.ToList();
+                List<CharacterItem> items = context.CharacterItems.Where(ci => ci.CharacterId == characterId).ToList();
+
+                return items;
             }
         }
 

@@ -66,7 +66,7 @@
                 
                 ConsoleKey key = Console.ReadKey(true).Key;
 
-                if (this.playerController.MovePlayer(dungeon, this.character, key))
+                if (this.playerController.Action(screenHandler, dungeon, this.character, key))
                 {
                     this.statusHandler.Draw(this.character, dungeonLevel);
                 }

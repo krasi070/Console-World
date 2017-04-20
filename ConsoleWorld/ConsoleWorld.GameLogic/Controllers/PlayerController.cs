@@ -9,11 +9,31 @@
     using System.Threading;
     using Models.Enemies;
     using Handler;
+    using Screens;
 
     public class PlayerController
     {
         private Random random = new Random();
         private MessageHandler messageHandler = new MessageHandler();
+
+        public bool Action(ScreenHandler screenHandler,Dungeon dungeon, Character character, ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.W:
+                case ConsoleKey.UpArrow:
+                case ConsoleKey.S:
+                case ConsoleKey.DownArrow:
+                case ConsoleKey.D:
+                case ConsoleKey.RightArrow:
+                case ConsoleKey.A:
+                case ConsoleKey.LeftArrow:
+                    return MovePlayer(dungeon, character, key);
+                case ConsoleKey.O:screenHandler.SelectOptionFromImproveStatsScreen(dungeon,character);
+                    return true;
+            }
+            return false;
+        }
 
         // returns true if status needs to be updated
         public bool MovePlayer(Dungeon dungeon, Character character, ConsoleKey key)
@@ -132,6 +152,7 @@
                         }
                     }
                     break;
+                
             }
 
             return this.CheckIfCharacterIsOnSpecialTile(dungeon, character, tile);
