@@ -36,6 +36,8 @@
                 case ConsoleKey.K:
                     this.ExecuteAttack(character, dungeon);
                     return true;
+                //case ConsoleKey.L:
+
             }
 
             return false;

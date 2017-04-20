@@ -13,7 +13,7 @@
         public const int DefaultEvade = 10;
         public const int DefaultAccuracy = 80;
         public const int DefaultRange = 1;
-        public const int DefaultExpReward = 35;
+        public const int DefaultExpReward = 1000;
         public const char DefaultSymbol = 'r';
         public const string DefaultName = "Rat";
         public const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;

@@ -19,6 +19,7 @@
         private const int VisibilityRange = 1;
         private const int ItemSpawnChance = 20;
         private const int MoneySpawnChance = 20;
+        private const int MagicWellSpawnChance = 100;
 
         private int maxItemSpawns;
         private int maxMoneySpawns;
@@ -92,6 +93,13 @@
                 if (this.random.Next(100) < MoneySpawnChance)
                 {
                     this.PlaceObject(TileType.Money);
+                }
+            }
+
+            if (random.Next(100) < MagicWellSpawnChance)
+            {
+                while (!this.PlaceObject(TileType.MagicWell))
+                {
                 }
             }
         }

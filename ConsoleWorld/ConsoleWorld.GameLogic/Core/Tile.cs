@@ -66,7 +66,7 @@
                     break;
                 case TileType.MagicWell:
                     this.BackgroundColor = ConsoleColor.Black;
-                    this.ForegroundColor = ConsoleColor.Gray;
+                    this.ForegroundColor = ConsoleColor.Blue;
                     break;
             }
         }

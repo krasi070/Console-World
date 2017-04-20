@@ -1,6 +1,7 @@
 ﻿namespace ConsoleWorld.GameLogic.Core
 {
     using Controllers;
+    using Data;
     using Handler;
     using Models;
     using Models.Enemies;
@@ -68,22 +69,28 @@
                     this.statusHandler.Draw(this.character, dungeonLevel);
                 }
 
-                foreach (var enemy in this.dungeon.Enemies.Values) 
+                foreach (var enemyPair in this.dungeon.Enemies) 
                 {
-                    if (enemy.Hp <= 0)
+                    if (enemyPair.Value.Hp <= 0)
                     {
-                        dungeon.DrawTile(enemy.X, enemy.Y);
-                        dungeon.GetTile(enemy.X, enemy.Y).IsEnemy = false;
-                        eindex.Add(enemy.X + enemy.Y * dungeon.Width);
-                        this.messageHandler.KillMessage(this.character, enemy);
+                        dungeon.DrawTile(enemyPair.Value.X, enemyPair.Value.Y);
+                        dungeon.GetTile(enemyPair.Value.X, enemyPair.Value.Y).IsEnemy = false;
+                        eindex.Add(enemyPair.Key);
+                        this.messageHandler.KillMessage(this.character, enemyPair.Value);
+                        this.GiveEnemyRewards(enemyPair.Value);
                     }
                 }
 
                 foreach (var e in eindex)
                 {
+                    var tile = dungeon.GetTile(dungeon.Enemies[e].X, dungeon.Enemies[e].Y);
+                    tile.IsFree = true;
+                    tile.IsEnemy = false;
+                    dungeon.DrawTile(dungeon.Enemies[e].X, dungeon.Enemies[e].Y);
                     dungeon.Enemies.Remove(e);
                 }
 
+                eindex.Clear();
                 if (newDungeonFloor)
                 {
                     this.CreateNewDungeon();
@@ -110,6 +117,23 @@
 
             Console.Clear();
             GameOver();
+        }
+
+        private void GiveEnemyRewards(Enemy enemy)
+        {
+            this.character.Exp += enemy.ExpReward;
+            int x = this.character.X;
+            int y = this.character.Y;
+            while (this.character.Exp >= Utility.GetExpToNextLevel(this.character.Id))
+            {
+                int additionalExp = this.character.Exp - Utility.GetExpToNextLevel(this.character.Id);
+                Utility.IncreaseCharacterLevel(character.Id, additionalExp);
+            }
+
+            this.character = Utility.GetCharacterByName(character.Name);
+            this.character.X = x;
+            this.character.Y = y;
+            this.statusHandler.Draw(character, dungeonLevel);
         }
 
         private bool IsInputValid(ConsoleKey key)

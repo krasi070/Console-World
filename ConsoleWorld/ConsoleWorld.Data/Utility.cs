@@ -129,5 +129,38 @@
                 }
             }
         }
+
+        public static void IncreaseCharacterLevel(int characterId, int additionalExp)
+        {
+            using (var context = new ConsoleWorldContext())
+            {
+                var character = context.Characters.FirstOrDefault(c => c.Id == characterId);
+                if (character != null && context.Levels.Count() > character.LevelId)
+                {
+                    int newLevel = character.LevelId + 1;
+                    character.LevelId++;
+                    character.Level = context.Levels.FirstOrDefault(l => l.LevelId == newLevel);
+                    character.Points += character.Level.PointsToReceive;
+                    character.Exp = additionalExp;
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        public static int GetExpToNextLevel(int characterId)
+        {
+            int exp = 0;
+            using (var context = new ConsoleWorldContext())
+            {
+                var character = context.Characters.FirstOrDefault(c => c.Id == characterId);
+                if (character != null)
+                {
+                    exp = character.Level.ExpToNextLevel;
+                }
+            }
+
+            return exp;
+        }
     }
 }
