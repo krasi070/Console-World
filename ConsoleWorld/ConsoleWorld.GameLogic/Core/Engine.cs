@@ -7,6 +7,7 @@
     using Screens;
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     public class Engine
     {
@@ -20,12 +21,9 @@
         private Dungeon dungeon;
         private StatusHandler statusHandler;
         private MessageHandler messageHandler;
-
         private Character character;
         private int dungeonLevel = 0;
-        private int chp;
-        private int ehp;
-        private List<Enemy> eindex;
+        private List<int> eindex;
         
         public Engine()
         {
@@ -34,7 +32,7 @@
             this.enemyController = new EnemyController();
             this.statusHandler = new StatusHandler();
             this.messageHandler = new MessageHandler();
-            this.eindex = new List<Enemy>();
+            this.eindex = new List<int>();
         }
 
         public void Run()
@@ -63,7 +61,6 @@
             //this.messageHandler.BattleMessage(this.character, rat, 20);
             while (this.character.IsAlive)
             {
-                
                 ConsoleKey key = Console.ReadKey(true).Key;
 
                 if (this.playerController.Action(screenHandler, dungeon, this.character, key))
@@ -71,27 +68,21 @@
                     this.statusHandler.Draw(this.character, dungeonLevel);
                 }
 
-                for (int i = 0; i < dungeon.Enemies.Count; i++) 
+                foreach (var enemy in this.dungeon.Enemies.Values) 
                 {
-                    this.playerController.EnemyInRange(character,dungeon, dungeon.Enemies[i]);
-                    if (dungeon.Enemies[i].Hp <= 0)
+                    if (enemy.Hp <= 0)
                     {
-                        dungeon.DrawTile(dungeon.Enemies[i].X, dungeon.Enemies[i].Y);
-                        dungeon.GetTile(dungeon.Enemies[i].X, dungeon.Enemies[i].Y).IsEnemy = false;
-                        eindex.Add(dungeon.Enemies[i]);
+                        dungeon.DrawTile(enemy.X, enemy.Y);
+                        dungeon.GetTile(enemy.X, enemy.Y).IsEnemy = false;
+                        eindex.Add(enemy.X + enemy.Y * dungeon.Width);
+                        this.messageHandler.KillMessage(this.character, enemy);
                     }
-
-                    ehp = dungeon.Enemies[i].Hp;
-                    Console.SetCursorPosition(96, 28);
-                    Console.WriteLine(ehp);
                 }
 
                 foreach (var e in eindex)
                 {
                     dungeon.Enemies.Remove(e);
                 }
-
-                chp = character.Hp;
 
                 if (newDungeonFloor)
                 {
@@ -100,22 +91,44 @@
                     continue;
                 }
 
-                Console.SetCursorPosition(90, 28);
-                Console.WriteLine(chp);
                 dungeon.MakeAdjacentTilesVisible(this.character.X, this.character.Y);
-                foreach (var enemy in this.dungeon.Enemies)
+                if (this.IsInputValid(key))
                 {
-                    if (enemy.IsVisible)
+                    var enemies = this.dungeon.Enemies.Values.ToList();
+                    foreach (var enemy in enemies)
                     {
-                        this.enemyController.MoveEnemy(this.dungeon, enemy);
-                        this.enemyController.PlayerInRange(enemy, dungeon, character);
+                        if (enemy.IsVisible)
+                        {
+                            if (this.enemyController.Action(this.dungeon, enemy, this.character))
+                            {
+                                this.statusHandler.Draw(this.character, dungeonLevel);
+                            }
+                        }
                     }
                 }
-                
             }
 
             Console.Clear();
             GameOver();
+        }
+
+        private bool IsInputValid(ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                case ConsoleKey.DownArrow:
+                case ConsoleKey.LeftArrow:
+                case ConsoleKey.RightArrow:
+                case ConsoleKey.W:
+                case ConsoleKey.S:
+                case ConsoleKey.A:
+                case ConsoleKey.D:
+                case ConsoleKey.K:
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         private void CreateNewDungeon()

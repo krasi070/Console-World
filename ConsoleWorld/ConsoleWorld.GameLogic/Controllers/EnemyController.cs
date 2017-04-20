@@ -1,25 +1,51 @@
-﻿using System.Diagnostics;
-using System.Threading;
-using ConsoleWorld.Models;
-
-namespace ConsoleWorld.GameLogic.Controllers
+﻿namespace ConsoleWorld.GameLogic.Controllers
 {
     using Core;
     using Enums;
     using Models.Enemies;
     using System;
+    using System.Collections.Generic;
+    using System.Threading;
+    using Models;
+    using Handler;
 
     public class EnemyController
     {
+        private const int AttackChance = 80;
+
         private Random random;
+        private MessageHandler messageHandler;
 
         public EnemyController()
         {
             this.random = new Random();
+            this.messageHandler = new MessageHandler();
+        }
+
+        public bool Action(Dungeon dungeon, Enemy enemy, Character character)
+        {
+            if (random.Next(100) < AttackChance)
+            {
+                if (!this.ExecuteAttack(enemy, dungeon, character))
+                {
+                    this.MoveEnemy(dungeon, enemy);
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                this.MoveEnemy(dungeon, enemy);
+            }
+
+            return false;
         }
 
         public void MoveEnemy(Dungeon dungeon, Enemy enemy)
         {
+            int index = enemy.X + enemy.Y * dungeon.Width;
             Direction direction = (Direction)random.Next(4);
             switch (direction)
             {
@@ -80,59 +106,65 @@ namespace ConsoleWorld.GameLogic.Controllers
                     }
                     break;
             }
-        }
-        public void PlayerInRange(Enemy enemy, Dungeon dungeon,Character character)
-        {
-            for (int i = Math.Max(enemy.X - enemy.Range, 0); i <= Math.Min(enemy.X + enemy.Range, dungeon.Width); i++)
-            {
-                for (int j = Math.Max(enemy.Y - enemy.Range, 0); j <= Math.Min(enemy.Y + enemy.Range, dungeon.Height); j++)
-                {
-                    Tile tile = dungeon.GetTile(i, j);
-                    if (tile.IsPlayer)
-                    {
-                        if (random.Next(100) < character.Evade && random.Next(100) < enemy.Accuracy)
-                        {
-                            if (enemy.EquippedWeapon != null)
-                            {
-                                if (enemy.MagicAttack + enemy.EquippedWeapon.MagicPower >
-                                    enemy.Attack + enemy.EquippedWeapon.Damage && enemy.Mp > 0)
-                                {
-                                    character.Hp -= Math.Max((enemy.MagicAttack + enemy.EquippedWeapon.MagicPower) -
-                                                             character.MagicDefense, 0);
-                                    enemy.Mp--;
-                                }
-                                else
-                                {
-                                    character.Hp -= Math.Max((enemy.Attack + enemy.EquippedWeapon.Damage)
-                                                             - character.Defense, 0);
-                                }
-                            }
-                            else
-                            {
-                                if (enemy.MagicAttack > enemy.Attack && enemy.Mp > 0)
-                                {
-                                    character.Hp -= Math.Max(enemy.MagicAttack - character.MagicDefense, 0);
-                                    enemy.Mp--;
-                                }
-                                else
-                                {
-                                    character.Hp -= Math.Max(enemy.Attack - character.Defense, 0);
-                                }
-                            }
 
-                            Console.SetCursorPosition(i, j);
-                            enemy.Draw(ConsoleColor.Red);
-                            Stopwatch stopWatch = new Stopwatch();
-                            stopWatch.Start();
-                            Thread.Sleep(50);
-                            stopWatch.Stop();
-                            Console.SetCursorPosition(i, j);
-                            enemy.Draw();
-                        }
+            dungeon.Enemies.Remove(index);
+            dungeon.Enemies.Add(enemy.X + enemy.Y * dungeon.Width, enemy);
+        }
+
+        public bool ExecuteAttack(Enemy enemy, Dungeon dungeon, Character character)
+        {
+            Queue<Tuple<int[], Tile>> tiles = new Queue<Tuple<int[], Tile>>();
+            List<int> visitedTiles = new List<int>();
+            tiles.Enqueue(new Tuple<int[], Tile>(new int[] { enemy.X, enemy.Y, 0 }, dungeon.GetTile(enemy.X, enemy.Y)));
+            while (tiles.Count > 0)
+            {
+                var tuple = tiles.Dequeue();
+                int x = tuple.Item1[0];
+                int y = tuple.Item1[1];
+                int currRange = tuple.Item1[2];
+                visitedTiles.Add(x + y * dungeon.Width);
+                if (tuple.Item2.IsPlayer)
+                {
+                    int damage = enemy.AttackUnit(character);
+                    if (damage >= 0)
+                    {
+                        character.Draw(ConsoleColor.Red);
+                        Thread.Sleep(50);
+                        character.Draw();
+                    }
+
+                    return true;
+                }
+
+                if (currRange < enemy.Range)
+                {
+                    Tile upTile = dungeon.GetTile(x, Math.Max(y - 1, 0));
+                    if ((upTile.IsFree || upTile.IsPlayer) && !visitedTiles.Contains(x + Math.Max(y - 1, 0) * dungeon.Width))
+                    {
+                        tiles.Enqueue(new Tuple<int[], Tile>(new int[] { x, Math.Max(y - 1, 0), currRange + 1 }, upTile));
+                    }
+
+                    Tile downTile = dungeon.GetTile(x, Math.Min(y + 1, dungeon.Height));
+                    if ((downTile.IsFree || downTile.IsPlayer) && !visitedTiles.Contains(x + Math.Min(y + 1, dungeon.Height) * dungeon.Width))
+                    {
+                        tiles.Enqueue(new Tuple<int[], Tile>(new int[] { x, Math.Min(y + 1, dungeon.Height), currRange + 1 }, downTile));
+                    }
+
+                    Tile rightTile = dungeon.GetTile(Math.Min(x + 1, dungeon.Width), y);
+                    if ((rightTile.IsFree || rightTile.IsPlayer) && !visitedTiles.Contains(Math.Min(x + 1, dungeon.Width) + y * dungeon.Width))
+                    {
+                        tiles.Enqueue(new Tuple<int[], Tile>(new int[] { Math.Min(x + 1, dungeon.Width), y, currRange + 1 }, rightTile));
+                    }
+
+                    Tile leftTile = dungeon.GetTile(Math.Max(x - 1, 0), y);
+                    if ((leftTile.IsFree || leftTile.IsPlayer) && !visitedTiles.Contains(Math.Max(x - 1, 0) + y * dungeon.Width))
+                    {
+                        tiles.Enqueue(new Tuple<int[], Tile>(new int[] { Math.Max(x - 1, 0), y, currRange + 1 }, leftTile));
                     }
                 }
             }
-            
+
+            return false;
         }
     }
 }

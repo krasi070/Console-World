@@ -17,7 +17,7 @@
         private const int MinCorridorLength = 5;
         private const int MaxCorridorLength = 8;
         private const int VisibilityRange = 1;
-        private const int ItemSpawnChance = 100;
+        private const int ItemSpawnChance = 20;
         private const int MoneySpawnChance = 20;
 
         private int maxItemSpawns;
@@ -32,7 +32,7 @@
             this.FillTiles();
             this.Rooms = new List<Rectangle>();
             this.Exits = new List<Rectangle>();
-            this.Enemies = new List<Enemy>();
+            this.Enemies = new Dictionary<int, Enemy>();
             this.Items = new Dictionary<int, Item>();
             this.random = new Random();
         }
@@ -43,7 +43,7 @@
 
         public List<Tile> Tiles { get; set; }
 
-        public List<Enemy> Enemies { get; set; }
+        public Dictionary<int, Enemy> Enemies { get; set; }
 
         public Dictionary<int, Item> Items { get; set; }
 
@@ -115,7 +115,7 @@
                 Console.SetCursorPosition(x, y);
                 if (tile.IsEnemy)
                 {
-                    var enemy = this.Enemies.FirstOrDefault(e => e.X == x && e.Y == y);                   
+                    var enemy = this.Enemies.Values.FirstOrDefault(e => e.X == x && e.Y == y);                   
                     enemy.IsVisible = true;
                     enemy.Draw();
                 }
@@ -179,7 +179,7 @@
                 enemy.X = x;
                 enemy.Y = y;
                 tile.IsEnemy = true;
-                this.Enemies.Add(enemy);
+                this.Enemies.Add(x + y * this.Width, enemy);
                 // place one object in one room (optional)
                 this.Rooms.RemoveAt(index);
 

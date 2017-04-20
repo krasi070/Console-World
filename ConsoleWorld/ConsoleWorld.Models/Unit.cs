@@ -1,7 +1,6 @@
 ﻿namespace ConsoleWorld.Models
 {
     using System.ComponentModel.DataAnnotations;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations.Schema;
     using System;
 
@@ -9,6 +8,7 @@
     {
         private int hp;
         private int mp;
+        private Random random = new Random();
 
         [NotMapped]
         public int X { get; set; }
@@ -115,6 +115,7 @@
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
         }
+
         public virtual void Draw(ConsoleColor color)
         {
             Console.BackgroundColor = this.BackgroundColor;
@@ -123,6 +124,47 @@
             Console.Write(this.Symbol);
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.White;
+        }
+
+        // -1 if missed
+        public virtual int AttackUnit(Unit other)
+        {
+            if (random.Next(100) > other.Evade && random.Next(100) < this.Accuracy)
+            {
+                int damage = 0;
+                if (this.EquippedWeapon != null)
+                {
+                    if (this.MagicAttack + this.EquippedWeapon.MagicPower > this.Attack + this.EquippedWeapon.Damage && this.Mp > 0)
+                    {
+                        damage = Math.Max((this.MagicAttack + this.EquippedWeapon.MagicPower) - other.MagicDefense, 0);
+                        other.Hp -= damage;
+                        this.Mp--;
+                    }
+                    else
+                    {
+                        damage = Math.Max((this.Attack + this.EquippedWeapon.Damage) - other.Defense, 0);
+                        other.Hp -= damage;
+                    }
+                }
+                else
+                {
+                    if (this.MagicAttack > this.Attack && this.Mp > 0)
+                    {
+                        damage = Math.Max(this.MagicAttack - other.MagicDefense, 0);
+                        other.Hp -= damage;
+                        this.Mp--;
+                    }
+                    else
+                    {
+                        damage = Math.Max(this.Attack - other.Defense, 0);
+                        other.Hp -= damage;
+                    }
+                }
+
+                return damage;
+            }
+
+            return -1;
         }
     }
 }

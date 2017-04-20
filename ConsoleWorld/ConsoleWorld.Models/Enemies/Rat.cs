@@ -15,6 +15,7 @@
         public const int DefaultRange = 1;
         public const int DefaultExpReward = 35;
         public const char DefaultSymbol = 'r';
+        public const string DefaultName = "Rat";
         public const ConsoleColor DefaultBackgroundColor = ConsoleColor.Black;
         public const ConsoleColor DefaultForegroundColor = ConsoleColor.Magenta;
 
@@ -35,6 +36,7 @@
             this.Range = DefaultRange;
             this.ExpReward = DefaultExpReward;
             this.Symbol = DefaultSymbol;
+            this.Name = DefaultName;
             this.BackgroundColor = DefaultBackgroundColor;
             this.ForegroundColor = DefaultForegroundColor;
             this.IncreaseStatsForLevel();

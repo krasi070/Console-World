@@ -18,9 +18,19 @@
             this.WriteMessage($"{character.Name} picked up a(n) {item.Name}!");
         }
 
+        public void MissMessage(Character character)
+        {
+            this.WriteMessage($"{character.Name} missed!");
+        }
+
         public void MoneyMessage(Character character, int money)
         {
             this.WriteMessage($"{character.Name} got {money}$!");
+        }
+
+        public void KillMessage(Unit killer, Unit killed)
+        {
+            this.WriteMessage($"{killer.Name} killed {killed.Name}!");
         }
 
         public void EraseMessage()

@@ -96,59 +96,52 @@ namespace ConsoleWorld.GameLogic.Screens
                                     character.MaxMp += 1;
                                     character.Points--;
                                     DrawStats(character, "MaxMp");
-
                                     break;
                                 case "Attack":
                                     character.Attack += 1;
                                     character.Points--;
                                     DrawStats(character, "Attack");
-
                                     break;
                                 case "MagicAttack":
                                     character.MagicAttack += 1;
                                     character.Points--;
                                     DrawStats(character, "MagicAttack");
-
                                     break;
                                 case "Defense":
                                     character.Defense += 1;
                                     character.Points--;
                                     DrawStats(character, "Defense");
-
                                     break;
                                 case "MagicDefense":
                                     character.MagicDefense += 1;
                                     character.Points--;
                                     DrawStats(character, "MagicDefense");
-
                                     break;
                                 case "Accuracy":
                                     character.Accuracy += 1;
                                     character.Points--;
                                     DrawStats(character, "Accuracy");
-
                                     break;
                                 case "Evade":
                                     character.Evade += 1;
                                     character.Points--;
                                     DrawStats(character, "Evaded");
-
                                     break;
                                 case "Back":
-                                   
                                     return true;
                             }
+
                             ctx.SaveChanges();
-                                                           
-                            
                         }
                         break;
 
                 }
+
                 Console.SetCursorPosition(40, 5);
                 Console.WriteLine(new string(' ', "You don't have enough points for that!".Length));
                 key = Console.ReadKey(true).Key;
             }
+
             return false;
         }
 
@@ -314,19 +307,20 @@ namespace ConsoleWorld.GameLogic.Screens
             }
         }
 
-        private static void DrawStats(Character ch,string stat)
+        private static void DrawStats(Character ch, string stat)
         {
             // Console.WriteLine(stat);
             string className = ch.Class.ToString();
             Type type = Type.GetType($"ConsoleWorld.Models.Classes.{className},ConsoleWorld.Models");
             string curr = type.GetProperty(stat).GetValue(ch).ToString();            
             Console.SetCursorPosition(StatsX, StatsY);
-            Console.Write(new string(' ',40));
+            Console.Write(new string(' ', 40));
             Console.SetCursorPosition(StatsX, StatsY);
             Console.Write($"Current {stat}: {curr}");
             PrintPoints(ch);
             
         }
+
         private static void PrintPoints(Character character)
         {
             Console.SetCursorPosition(PointsX, PointsY);
