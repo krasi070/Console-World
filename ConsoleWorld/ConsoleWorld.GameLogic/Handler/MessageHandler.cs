@@ -52,6 +52,11 @@
             }
         }
 
+        public void MagicWellWeaponMessage(Character character, Weapon weapon)
+        {
+            this.WriteMessage($"{character.Name} got a {weapon.Name}!");
+        }
+
         public void MagicWellTutorialMessage(Character character)
         {
             this.WriteMessage($"Will {character.Name} give all of his money to the magic well? (Press [L])");

@@ -292,13 +292,22 @@
             {
                 int money = character.Money;
                 character.Money = 0;
-                var items = Utility.GetItemsForMagicWell(money);
-                foreach (var item in items)
+                if (money >= 50 && random.Next(100) < 100)
                 {
-                    Utility.AddItemToCharacter(character.Id, item.Id);
+                    var weapon = Utility.GetWeaponForMagicWell(character, money);
+                    Utility.EquipWeaponToCharacter(character, weapon);
+                    this.messageHandler.MagicWellWeaponMessage(character, weapon);
                 }
+                else
+                {
+                    var items = Utility.GetItemsForMagicWell(money);
+                    foreach (var item in items)
+                    {
+                        Utility.AddItemToCharacter(character.Id, item.Id);
+                    }
 
-                this.messageHandler.MagicWellMessage(character, items);
+                    this.messageHandler.MagicWellMessage(character, items);
+                }
             }
         }
     }

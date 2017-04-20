@@ -46,6 +46,7 @@
                     this.character = this.screenHandler.SelectOptionFromStartMenuScreen();
                     if (this.character != null)
                     {
+                        this.character.Money = 100;
                         this.dungeonLevel = character.DungeonLevel - 1;
                         Console.Clear();
                         

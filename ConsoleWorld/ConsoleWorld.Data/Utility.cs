@@ -344,5 +344,23 @@
 
             return quantity;
         }
+
+        public static void EquipWeaponToCharacter(Character character, Weapon weapon)
+        {
+            using (var context = new ConsoleWorldContext())
+            {
+                var characterDb = context.Characters.FirstOrDefault(c => c.Id == character.Id);
+                var weaponDb = context.Weapons.FirstOrDefault(w => w.Id == weapon.Id);
+                if (characterDb != null && weaponDb != null)
+                {
+                    characterDb.EquippedWeaponId = weaponDb.Id;
+                    characterDb.EquippedWeapon = weaponDb;
+                    context.SaveChanges();
+
+                    character.EquippedWeaponId = weapon.Id;
+                    character.EquippedWeapon = weapon;
+                }
+            }
+        }
     }
 }
